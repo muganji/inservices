@@ -108,3 +108,4 @@ wsdl.wsdl
 
 .vscode/
 .vscode
+*.ini
