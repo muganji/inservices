@@ -12,6 +12,8 @@ class User(db.Model):
     password_hash = db.Column(db.String(128))
     is_admin = db.Column(db.Boolean)
     is_active = db.Column(db.Boolean)
+    can_debit = db.Column(db.Boolean)
+    can_credit = db.Column(db.Boolean)
     mml_username = db.Column(db.String(20), unique=True)
     mml_password = db.Column(db.String(20), unique=True)
 
