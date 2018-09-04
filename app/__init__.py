@@ -13,9 +13,12 @@ from app.api.controllers.accounts.routes import accounts_api
 from app.api.controllers.airtime.routes import airtime_api
 from app.api.controllers.packages.routes import packages_api
 from app.api.controllers.subscribers.routes import subscribers_api
+from app.site.accounts.routes import site_accounts
 
 # Register blueprints
 app.register_blueprint(accounts_api, url_prefix='/inservices/api/v1.0/accounts')
 app.register_blueprint(airtime_api, url_prefix='/inservices/api/v1.0/airtime')
 app.register_blueprint(packages_api, url_prefix='/inservices/api/v1.0/packages')
 app.register_blueprint(subscribers_api, url_prefix='/inservices/api/v1.0/profile')
+
+app.register_blueprint(site_accounts, url_prefix='/inservices/accounts')
