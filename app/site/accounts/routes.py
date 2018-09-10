@@ -22,7 +22,7 @@ site_accounts = Blueprint('site_accounts', __name__, template_folder='templates'
 @site_accounts.route('/')
 @site_accounts.route('/index')
 def index():
-    return render_template('index.html', title = 'IN Services API - Accounts')
+    return render_template('index.html')
 
 @site_accounts.route('/register', methods=['POST'])
 @token_required

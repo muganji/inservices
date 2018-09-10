@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <title>
+        {% if title %}
+            {{ title }} - IN Services API Portal
+        {% else %}
+            IN Services API Portal
+        {% endif %}
+    </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='site/css/site.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/web-fonts-with-css/css/fontawesome-all.min.css') }}">
+</head>
+<body class="bg-dark">
+    <div class="container-fluid">
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-utl text-white">
+                <a class="navbar-brand" href="{{ url_for('site_accounts.index') }}"> Uganda Telecom</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+        </nav>
+        <div class="row">
+            <div class="col-2 bg-light">
+                <br /><br /><br /><br />
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action active">
+                        <span class="lead">Menu</span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">Accounts</a>
+                    <a href="#" class="list-group-item list-group-item-action">Requests</a>
+                </div>
+                <br /><br />
+            </div>
+            <div class="col-10 bg-white">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-info" role="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+                <div class="row">
+                    <div class="col-12">
+                        <br /><br />
+                        {% block app_content %}{% endblock %}
+                    </div>
+                </div>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+    <footer class="container-fluid bg-dark text-white">
+        <p>&copy; {{ current_year }} - Uganda Telecom Limited</p>
+    </footer>
+
+    <script src="{{url_for('static', filename='jquery/dist/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename='popper/popper.min.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
+</body>
+</html>
