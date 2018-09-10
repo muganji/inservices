@@ -36,7 +36,7 @@ def register(current_user):
             try:
                 db.session.add(new_user)
                 db.session.commit()
-                message,code = 'SUCCESS: User created successfully',200
+                message,code = 'OK',200
             except:
                 message,code = 'FAILED_CREATE_USER',500
         else:
@@ -60,11 +60,11 @@ def initialsetup():
         try:
             db.session.add(new_user)
             db.session.commit()
-            message,code = 'SUCCESS_INITIAL_SETUP',200
+            message,code = 'OK',200
         except:
             message,code = 'FAILED_INITIAL_SETUP',500
     else:
-        message,code = 'OK_INITIAL_SETUP',200
+        message,code = 'OK',200
     return jsonify({'OperationResult': message}),code
 
 @websmap_accounts_api.route('/login')
