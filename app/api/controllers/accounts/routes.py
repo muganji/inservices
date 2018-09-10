@@ -43,7 +43,7 @@ def register(current_user):
             message,code = 'INVALID_NEW_USER',200
         return jsonify({'OperationResult': message}),code
 
-@accounts_api.route('/initialsetup')
+@app.route('/inservices/api/v1.0/initialsetup')
 def initialsetup():
     """Initial setup of the api for use"""
     new_user = User(
@@ -51,6 +51,8 @@ def initialsetup():
         username = app.config['INITIAL_SETUP']['ACCOUNT']['USERNAME'],
         is_admin = app.config['INITIAL_SETUP']['ACCOUNT']['IS_ADMIN'],
         is_active = app.config['INITIAL_SETUP']['ACCOUNT']['IS_ACTIVE'],
+        can_credit = app.config['INITIAL_SETUP']['ACCOUNT']['CAN_CREDIT'],
+        can_debit = app.config['INITIAL_SETUP']['ACCOUNT']['CAN_DEBIT'],
         mml_username = app.config['INITIAL_SETUP']['ACCOUNT']['MML_USERNAME'],
         mml_password = app.config['INITIAL_SETUP']['ACCOUNT']['MML_PASSWORD']
     )
