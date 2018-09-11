@@ -22,3 +22,7 @@ websmap_recharges = Blueprint('websmap_recharges', __name__, template_folder='te
 @websmap_recharges.route('/')
 def index():
     return render_template('websmap/recharges/index.html')
+
+@websmap_recharges.route('/new')
+def new():
+    return render_template('websmap/recharges/new.html')

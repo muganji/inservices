@@ -11,4 +11,16 @@
         <a href="{{ url_for('websmap_home.index') }}" class="list-group-item list-group-item-action list-group-item-secondary">WebSMAP Portal</a>
     </div>
 
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        function setHeight() {
+            windowHeight = window.innerHeight - 145;
+            $('.app-content').css('min-height', windowHeight);
+        };        
+        setHeight();
+        window.onresize = function(){setHeight();}
+    });
+</script>
 {% endblock %}
