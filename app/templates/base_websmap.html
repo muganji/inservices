@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block app_menu %}
+    
+    <div class="list-group">
+        <a href="{{ url_for('websmap_home.index') }}" class="list-group-item list-group-item-action active">
+            <span class="lead">WebSMAP Portal</span>
+        </a>
+        <a href="#" class="list-group-item list-group-item-action">Users</a>
+        <a href="#" class="list-group-item list-group-item-action">Recharges</a>
+        <a href="{{ url_for('developers_home.index') }}" class="list-group-item list-group-item-action list-group-item-secondary">Developers Portal</a>
+    </div>
+
+{% endblock %}

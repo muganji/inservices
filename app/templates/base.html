@@ -6,9 +6,9 @@
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <title>
         {% if title %}
-            {{ title }} - IN Services API Portal
+            {{ title }} - WebSMAP Portal
         {% else %}
-            IN Services API Portal
+            WebSMAP Portal
         {% endif %}
     </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='site/css/site.css') }}">
@@ -18,7 +18,7 @@
 <body class="bg-dark">
     <div class="container-fluid">
         <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-utl text-white">
-                <a class="navbar-brand" href="{{ url_for('site_accounts.index') }}"> Uganda Telecom</a>
+                <a class="navbar-brand" href="#"> Uganda Telecom</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -27,13 +27,7 @@
         <div class="row">
             <div class="col-2 bg-light">
                 <br /><br /><br /><br />
-                <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action active">
-                        <span class="lead">Menu</span>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">Accounts</a>
-                    <a href="#" class="list-group-item list-group-item-action">Requests</a>
-                </div>
+                {% block app_menu %}{% endblock %}
                 <br /><br />
             </div>
             <div class="col-10 bg-white">
