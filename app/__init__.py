@@ -32,8 +32,6 @@ login.blueprint_login_views
 from app.models.recharge import Recharge
 from app.models.user import User
 from app.models.usertoken import UserToken
-from app.models.websmapuser import WebSmapUser
-from app.models.websmapusertoken import WebSmapUserToken
 
 from app.api import api_blueprint
 from app.site.developers import developers_blueprint

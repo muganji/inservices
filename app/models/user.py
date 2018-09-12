@@ -16,6 +16,7 @@ class User(db.Model):
     mml_username = db.Column(db.String(20), unique=True)
     mml_password = db.Column(db.String(20), unique=True)
     virtual_number = db.Column(db.String(20), unique=True)
+    user_type = db.Column(db.String(10))
 
     def set_password(self, password):
         """Creates the password hash"""

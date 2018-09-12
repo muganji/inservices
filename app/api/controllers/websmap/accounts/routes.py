@@ -7,8 +7,8 @@ from datetime import datetime, timedelta
 
 
 from app import app, db
-from app.models.websmapuser import WebSmapUser
-from app.models.websmapusertoken import WebSmapUserToken
+from app.models.user import User
+from app.models.usertoken import UserToken
 from app.decorators import token_required
 from app.handlers import store_token, valid_user
 from app.api import api_blueprint
@@ -21,7 +21,7 @@ def register(current_user):
         return jsonify({'OperationResult': 'ACCESS_DENIED'}),403
     else:
         data = request.get_json()
-        new_user = WebSmapUser(
+        new_user = User(
             public_id = str(uuid.uuid4()),
             username = data['username'],
             is_admin = False,
@@ -45,7 +45,7 @@ def register(current_user):
 @api_blueprint.route('/websmap/accounts/initialsetup')
 def initialsetup():
     """Initial setup of the api for use"""
-    new_user = WebSmapUser(
+    new_user = User(
         public_id=str(uuid.uuid4()),
         username = app.config['INITIAL_SETUP']['ACCOUNT']['USERNAME'],
         is_admin = app.config['INITIAL_SETUP']['ACCOUNT']['IS_ADMIN'],
@@ -74,7 +74,7 @@ def login():
     if not auth or not auth.username or not auth.password:
         return make_response('Could not verify', 403, {'WWW-Authenticate': 'Basic realm="Login required'})
     
-    user = WebSmapUser.query.filter_by(username=auth.username).first()
+    user = User.query.filter_by(username=auth.username).first()
     
     if not user:
         return make_response('Could not verify', 403, {'WWW-Authenticate': 'Basic realm="Login required"'})

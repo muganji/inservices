@@ -4,7 +4,7 @@ import jwt
 from functools import wraps
 
 
-from app.models.websmapuser import WebSmapUser
+from app.models.user import User
 
 
 def token_required(f):
@@ -20,7 +20,7 @@ def token_required(f):
 
         try:
             token_data = jwt.decode(token, app.config['SECRET_KEY'])
-            current_user = WebSmapUser.query.filter_by(public_id=token_data['public_id']).first()
+            current_user = User.query.filter_by(public_id=token_data['public_id']).first()
         except:
             return jsonify({'OperationResult' : 'INVALID_TOKEN'}), 403
 
