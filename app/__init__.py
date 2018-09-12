@@ -1,10 +1,28 @@
+import os
+
+
 from flask import Flask
-from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
+
+import config
+
+
+config_env = {
+    'default': 'config.default.Config',
+    'development': 'config.development.DevelopmentConfig',
+    'production': 'config.production.ProductionConfig',
+    'testing': 'config.testing.TestingConfig'
+}
+
+def config_app(app):
+    config_name = os.getenv('FLASK_ENV', 'default')
+    app.config.from_pyfile('config.py')
+    app.config.from_object(config_env[config_name])
+
 app = Flask(__name__)
-app.config.from_object(Config)
+config_app(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
