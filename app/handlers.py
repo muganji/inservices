@@ -1,7 +1,7 @@
 import string
 import random
 
-from app.models import WebSmapUserToken
+from app.models.websmapusertoken import WebSmapUserToken
 from app import db
 
 def store_token(user_public_id, token):

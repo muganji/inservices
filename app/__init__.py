@@ -21,12 +21,17 @@ def config_app(app):
     app.config.from_pyfile('config.py')
     app.config.from_object(config_env[config_name])
 
-app = Flask(__name__)
+app = Flask(__name__, instance_relative_config=True)
 config_app(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from app import models
+from app.models.recharge import Recharge
+from app.models.user import User
+from app.models.usertoken import UserToken
+from app.models.websmapuser import WebSmapUser
+from app.models.websmapusertoken import WebSmapUserToken
+
 from app.api.controllers.accounts.routes import accounts_api
 from app.api.controllers.airtime.routes import airtime_api
 from app.api.controllers.packages.routes import packages_api

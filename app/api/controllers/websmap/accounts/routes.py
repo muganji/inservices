@@ -7,9 +7,10 @@ from datetime import datetime, timedelta
 
 
 from app import app, db
-from app.models import WebSmapUser, WebSmapUserToken
-from app.websmap.decorators import token_required
-from app.websmap.handlers import store_token, valid_user
+from app.models.websmapuser import WebSmapUser
+from app.models.websmapusertoken import WebSmapUserToken
+from app.decorators import token_required
+from app.handlers import store_token, valid_user
 
 
 websmap_accounts_api = Blueprint('websmap_accounts', __name__)
