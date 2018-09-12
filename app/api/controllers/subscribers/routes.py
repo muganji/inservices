@@ -11,12 +11,10 @@ from app.models.user import User
 from app.models.usertoken import UserToken
 from app.decorators import token_required
 from app.handlers import store_token, valid_user
+from app.api import api_blueprint
 
 
-subscribers_api = Blueprint('subscribers', __name__)
-
-
-@subscribers_api.route('/change', methods=['POST'])
+@api_blueprint.route('/profile/change', methods=['POST'])
 @token_required
 def change(current_user):
     try:
@@ -43,7 +41,7 @@ def change(current_user):
     return jsonify({'OperationResult': message}), code
 
 
-@subscribers_api.route('/<msisdn>')
+@api_blueprint.route('/profile/<msisdn>')
 @token_required
 def query(current_user, msisdn):
     try:
@@ -60,7 +58,7 @@ def query(current_user, msisdn):
     return jsonify({ status: message }), code
 
 
-@subscribers_api.route('/balance/<msisdn>')
+@api_blueprint.route('/profile/balance/<msisdn>')
 @token_required
 def balance(current_user, msisdn):
     try:

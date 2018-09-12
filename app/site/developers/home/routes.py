@@ -16,10 +16,8 @@ from app.models.user import User
 from app.models.usertoken import UserToken
 from app.decorators import token_required
 from app.handlers import store_token, valid_user
+from app.site.developers import developers_blueprint
 
-
-developers_home = Blueprint('developers_home', __name__, template_folder='templates')
-
-@developers_home.route('/')
+@developers_blueprint.route('/')
 def index():
     return render_template('developers/home/index.html')

@@ -11,11 +11,9 @@ from app.models.websmapuser import WebSmapUser
 from app.models.websmapusertoken import WebSmapUserToken
 from app.decorators import token_required
 from app.handlers import store_token, valid_user
+from app.api import api_blueprint
 
-
-websmap_accounts_api = Blueprint('websmap_accounts', __name__)
-
-@websmap_accounts_api.route('/register', methods=['POST'])
+@api_blueprint.route('/websmap/accounts/register', methods=['POST'])
 @token_required
 def register(current_user):
     """Create a new API user"""
@@ -44,7 +42,7 @@ def register(current_user):
             message,code = 'INVALID_NEW_USER',200
         return jsonify({'OperationResult': message}),code
 
-@websmap_accounts_api.route('/initialsetup')
+@api_blueprint.route('/websmap/accounts/initialsetup')
 def initialsetup():
     """Initial setup of the api for use"""
     new_user = WebSmapUser(
@@ -68,7 +66,7 @@ def initialsetup():
         message,code = 'OK',200
     return jsonify({'OperationResult': message}),code
 
-@websmap_accounts_api.route('/login')
+@api_blueprint.route('/websmap/login')
 def login():
     """Login and get authentication token"""
     auth = request.authorization

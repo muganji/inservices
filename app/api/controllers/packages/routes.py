@@ -11,12 +11,10 @@ from app.models.user import User
 from app.models.usertoken import UserToken
 from app.decorators import token_required
 from app.handlers import store_token, valid_user
+from app.api import api_blueprint
 
 
-packages_api = Blueprint('packages', __name__)
-
-
-@packages_api.route('/buy', methods=['POST'])
+@api_blueprint.route('/packages/buy', methods=['POST'])
 @token_required
 def buy(current_user):
     try:

@@ -11,12 +11,10 @@ from app.models.user import User
 from app.models.usertoken import UserToken
 from app.decorators import token_required
 from app.handlers import store_token, valid_user
+from app.api import api_blueprint
 
 
-airtime_api = Blueprint('airtime', __name__)
-
-
-@airtime_api.route('/debit', methods=['POST'])
+@api_blueprint.route('/airtime/debit', methods=['POST'])
 @token_required
 def debit(current_user):
     """Debit airtime account"""
@@ -37,7 +35,7 @@ def debit(current_user):
     
     return jsonify({'OperationResult': message}),code
 
-@airtime_api.route('/credit', methods=['POST'])
+@api_blueprint.route('/airtime/credit', methods=['POST'])
 @token_required
 def credit(current_user):
     """Credit airtime account"""

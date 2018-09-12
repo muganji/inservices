@@ -11,11 +11,9 @@ from app.models.user import User
 from app.models.usertoken import UserToken
 from app.decorators import token_required
 from app.handlers import store_token, valid_user
+from app.api import api_blueprint
 
-
-accounts_api = Blueprint('accounts', __name__)
-
-@accounts_api.route('/register', methods=['POST'])
+@api_blueprint.route('/accounts/register', methods=['POST'])
 @token_required
 def register(current_user):
     """Create a new API user"""
@@ -44,7 +42,7 @@ def register(current_user):
             message,code = 'INVALID_NEW_USER',200
         return jsonify({'OperationResult': message}),code
 
-@app.route('/inservices/api/v1.0/initialsetup')
+@api_blueprint.route('/initialsetup')
 def initialsetup():
     """Initial setup of the api for use"""
     new_user = User(
@@ -70,7 +68,7 @@ def initialsetup():
         message,code = 'OK_INITIAL_SETUP',200
     return jsonify({'OperationResult': message}),code
 
-@app.route('/inservices/api/v1.0/login')
+@api_blueprint.route('/login')
 def login():
     """Login and get authentication token"""
     auth = request.authorization

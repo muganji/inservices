@@ -16,10 +16,8 @@ from app.models.user import User
 from app.models.usertoken import UserToken
 from app.decorators import token_required
 from app.handlers import store_token, valid_user
+from app.site.websmap import websmap_blueprint
 
-
-websmap_home = Blueprint('websmap_home', __name__, template_folder='templates')
-
-@websmap_home.route('/')
+@websmap_blueprint.route('/')
 def index():
     return render_template('websmap/home/index.html')
