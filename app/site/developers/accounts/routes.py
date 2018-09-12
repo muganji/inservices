@@ -22,6 +22,11 @@ from app.site.developers import developers_blueprint
 def index():
     return render_template('developers/accounts/index.html')
 
+
+@developers_blueprint.route('/accounts/login')
+def login():
+    pass
+
 @developers_blueprint.route('/accounts/register', methods=['POST'])
 @token_required
 def register(current_user):

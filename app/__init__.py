@@ -27,7 +27,6 @@ config_app(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
-login.blueprint_login_views
 
 from app.models.recharge import Recharge
 from app.models.user import User
@@ -50,3 +49,9 @@ app.register_blueprint(developers_blueprint, url_prefix='/inservices/developers'
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
+
+login.blueprint_login_views = {
+    'api': '/inservices/api/v1.0/login',
+    'developers': '/inservices/developers/accounts/login',
+    'websmap': '/inservices/websmap/accounts/login'
+}
