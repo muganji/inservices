@@ -45,3 +45,8 @@ app.register_blueprint(websmap_blueprint, url_prefix='/inservices/websmap')
 
 # developers blueprint
 app.register_blueprint(developers_blueprint, url_prefix='/inservices/developers')
+
+# Load the user profile
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
