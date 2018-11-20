@@ -17,10 +17,10 @@ config_env = {
     'testing': 'config.testing.TestingConfig'
 }
 
-def config_app(app):
+def config_app(application):
     config_name = os.getenv('FLASK_ENV', 'default')
-    app.config.from_pyfile('config.py')
-    app.config.from_object(config_env[config_name])
+    application.config.from_pyfile('config.py')
+    application.config.from_object(config_env[config_name])
 
 app = Flask(__name__, instance_relative_config=True)
 config_app(app)
@@ -47,11 +47,11 @@ app.register_blueprint(developers_blueprint, url_prefix='/inservices/developers'
 
 # Load the user profile
 @login.user_loader
-def load_user(id):
-    return User.query.get(int(id))
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 login.blueprint_login_views = {
-    'api': '/inservices/api/v1.0/login',
-    'developers': '/inservices/developers/accounts/login',
-    'websmap': '/inservices/websmap/accounts/login'
+    'api_blueprint': '/inservices/api/v1.0/login',
+    'developers_blueprint': '/inservices/developers/accounts/login',
+    'websmap_blueprint': '/inservices/websmap/accounts/login'
 }

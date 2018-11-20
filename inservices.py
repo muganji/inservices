@@ -1,4 +1,5 @@
-
+"""IN Services flask application.
+"""
 from datetime import date
 
 
@@ -9,6 +10,8 @@ from app.models.recharge import Recharge
 
 @app.shell_context_processor
 def make_shell_context():
+    """Make shell context.
+    """
     return{
         'db': db,
         'User': User,
@@ -18,4 +21,6 @@ def make_shell_context():
 
 @app.context_processor
 def inject_current_year():
-    return { 'current_year': date.today().year }
+    """Current year injection.
+    """
+    return {'current_year': date.today().year}

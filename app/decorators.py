@@ -14,7 +14,7 @@ def token_required(f):
 
         if 'x-access-token' in request.headers:
             token = request.headers['x-access-token']
-        
+
         if not token:
             return jsonify({'OperationResult' : 'TOKEN_MISSING'}), 403
 
@@ -25,5 +25,5 @@ def token_required(f):
             return jsonify({'OperationResult' : 'INVALID_TOKEN'}), 403
 
         return f(current_user, *args, **kwargs)
-    
+
     return decorated
