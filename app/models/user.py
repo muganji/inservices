@@ -1,5 +1,18 @@
-from app import db
+from app import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
+
+
+@login.user_loader
+def load_user(user_id):
+    """Load the user profile.
+
+    Parameters
+    ----------
+    user_id : str
+        user ID.
+    """
+    return User.query.get(int(user_id))
+
 
 class User(db.Model):
     """Users table"""
