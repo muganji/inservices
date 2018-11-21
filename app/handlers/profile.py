@@ -75,7 +75,7 @@ def account_balance(msisdn: str, current_user: User) -> dict:
             app.config['IN_SERVER']['BUFFER_SIZE']) as in_connection:
 
         profile_info = dict(in_connection.display_account_info(msisdn))
-        balance = profile_info['ACCLEFT']
+        balance = float(profile_info['ACCLEFT'])
 
         return {
             'mobileNumber': msisdn,
@@ -108,7 +108,7 @@ def account_info(msisdn: str, current_user: User) -> dict:
             app.config['IN_SERVER']['BUFFER_SIZE']) as in_connection:
 
         profile_info = dict(in_connection.display_account_info(msisdn))
-        balance = profile_info['ACCLEFT']
+        balance = float(profile_info['ACCLEFT'])
         subscriber_type = profile_info['SUBSCRIBERTYPE']
         account_status = int(profile_info['ACNTSTAT'])
         temporary_suspend_date = datetime.strptime(
