@@ -46,7 +46,7 @@ def profile_status(msisdn: str, current_user: User) -> dict:
         if account_status == 1 and not temporarily_suspended:
             status_info['status'] = 'ACTIVE'
 
-        status_info['status'] = 'ACTIVE'
+        status_info['status'] = 'INACTIVE'
 
         return status_info
 
