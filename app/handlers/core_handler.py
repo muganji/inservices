@@ -51,3 +51,8 @@ def write_log(log_level: int, platform: str, category: str, message: str, user: 
         logger.critical('%s - %s - %s - %s', platform, category, message, user)
     else:
         logger.info('%s - %s - %s - %s', platform, category, message, user)
+
+
+class InvalidMsisdnError(ValueError):
+    """Error raised when MSISDN is invalid"""
+    pass
