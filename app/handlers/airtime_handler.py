@@ -6,7 +6,7 @@ from intelecom.intelecom import INConnection
 from app import app
 
 
-from app.handlers.profile import account_info
+from app.handlers.profile_handler import account_info
 
 
 from app.models.user import User

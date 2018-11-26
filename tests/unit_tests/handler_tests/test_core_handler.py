@@ -1,6 +1,6 @@
 """Core handler unit tests.
 """
-from app.handlers.core import msisdn_is_valid
+from app.handlers.core_handler import msisdn_is_valid
 
 
 def test_msisdn_is_valid_returns_bool():
