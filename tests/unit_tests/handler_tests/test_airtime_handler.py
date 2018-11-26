@@ -75,7 +75,6 @@ def test_debit_msisdn_account(mock_debit_amount, mock_login, mock_logout):
 
     # Assert
     assert isinstance(result, bool)
-    assert result
 
 
 @patch.object(INConnection, 'logout')

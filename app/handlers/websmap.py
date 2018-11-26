@@ -9,7 +9,8 @@ from intelecom.intelecom import INConnection
 from app import app
 from app.models.user import User
 
-def airtime_credit(msisdn : str, amount : str, current_user: User) -> bool:
+
+def airtime_credit(msisdn: str, amount: str, current_user: User) -> bool:
     """Credit airtime account"""
 
     # Open connection to the IN.
@@ -21,7 +22,7 @@ def airtime_credit(msisdn : str, amount : str, current_user: User) -> bool:
         app.config['IN_SERVER']['BUFFER_SIZE']) as in_connection:
 
         account_credit_succeeeded = in_connection.credit_account(
-            msisdn, 
+            msisdn,
             amount, 
             'WEBSMAP_{0}'.format(current_user.username))
 
