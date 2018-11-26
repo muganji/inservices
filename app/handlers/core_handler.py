@@ -1,6 +1,9 @@
 """Handler that caters for the cross functionality features.
 """
+import logging
 import re
+
+from app import logger
 
 
 def msisdn_is_valid(msisdn: str) -> bool:
@@ -22,3 +25,29 @@ def msisdn_is_valid(msisdn: str) -> bool:
         valid_msisdn = True
 
     return valid_msisdn
+
+
+def write_log(log_level: int, platform: str, category: str, message: str, user: str):
+    """Write custom log.
+
+    Parameters
+    ----------
+    platform : str
+        Platform runnning the service or application.
+    category : str
+        Log category.
+    message : str
+        Log message.
+    user : str
+        User performing the action.
+    """
+    if log_level == logging.INFO:
+        logger.info('%s - %s - %s - %s', platform, category, message, user)
+    elif log_level == logging.WARNING:
+        logger.warning('%s - %s - %s - %s', platform, category, message, user)
+    elif log_level == logging.ERROR:
+        logger.error('%s - %s - %s - %s', platform, category, message, user)
+    elif log_level == logging.CRITICAL:
+        logger.critical('%s - %s - %s - %s', platform, category, message, user)
+    else:
+        logger.info('%s - %s - %s - %s', platform, category, message, user)

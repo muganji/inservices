@@ -1,10 +1,12 @@
 """IN subscriber profile handling module
 """
+import logging
 from datetime import datetime
 
 from intelecom.intelecom import INConnection
 
 from app import app
+from app.handlers.core_handler import write_log
 from app.models.user import User
 
 
@@ -48,6 +50,18 @@ def profile_status(msisdn: str, current_user: User) -> dict:
 
         status_info['status'] = 'INACTIVE'
 
+        # Log the status information returned.
+        status_info_results = ' '\
+            .join('{!s}={!s}'
+                  .format(key, val) for (key, val) in status_info.items())
+        write_log(
+            logging.INFO,
+            'API',
+            'SYSTEM',
+            f"IN QUERY RESULT=0 {status_info_results}",
+            current_user.username
+        )
+
         return status_info
 
 
@@ -77,10 +91,25 @@ def account_balance(msisdn: str, current_user: User) -> dict:
         profile_info = dict(in_connection.display_account_info(msisdn))
         balance = float(profile_info['ACCLEFT'])
 
-        return {
+        profile_balance = {
             'mobileNumber': msisdn,
             'balance': balance
         }
+
+        # Log the balance information returned.
+        profile_balance_results = ' '\
+            .join('{!s}={!s}'
+                  .format(key, val) for (key, val) in profile_balance.items())
+
+        write_log(
+            logging.INFO,
+            'API',
+            'SYSTEM',
+            f"IN QUERY RESULT=0 {profile_balance_results}",
+            current_user.username
+        )
+
+        return profile_balance
 
 
 def account_info(msisdn: str, current_user: User) -> dict:
@@ -119,7 +148,7 @@ def account_info(msisdn: str, current_user: User) -> dict:
         profile_info = {
             'mobileNumber': msisdn,
             'balance': balance,
-            'subscriberType': subscriber_type
+            'subscriberProfile': subscriber_type
         }
 
         temporarily_suspended = (temporary_suspend_date < datetime.today())
@@ -127,5 +156,18 @@ def account_info(msisdn: str, current_user: User) -> dict:
             profile_info['status'] = 'ACTIVE'
 
         profile_info['status'] = 'INACTIVE'
+
+        # Log the account information returned.
+        profile_info_results = ' '\
+            .join('{!s}={!s}'
+                  .format(key, val) for (key, val) in profile_info.items())
+
+        write_log(
+            logging.INFO,
+            'API',
+            'SYSTEM',
+            f"IN QUERY RESULT=0 {profile_info_results}",
+            current_user.username
+        )
 
         return profile_info

@@ -1,1 +1,1 @@
-from app.inservices import app, db, login
+from app.inservices import app, db, login, logger

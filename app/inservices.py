@@ -1,3 +1,5 @@
+import logging
+from logging.handlers import TimedRotatingFileHandler
 import os
 
 from flask import Flask
@@ -21,6 +23,30 @@ CONFIG_ENV = {
 }
 
 
+def setup_logging():
+    """Setup module logging
+    """
+    log_date_format = '%Y-%m-%d %H:%M:%S'
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        datefmt=log_date_format)
+
+    rotating_handler = TimedRotatingFileHandler(
+        filename='../logs/inservices.log',
+        encoding='utf-8',
+        when='midnight',
+        utc=True
+    )
+    rotating_handler.setFormatter(formatter)
+
+    app_logger = logging.getLogger(__name__)
+    app_logger.setLevel(logging.INFO)
+
+    app_logger.addHandler(rotating_handler)
+
+    return app_logger
+
+
 def config_app(application):
     """Application configuration function.
 
@@ -39,6 +65,7 @@ config_app(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
+logger = setup_logging()
 
 # api blueprints
 app.register_blueprint(

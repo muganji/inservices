@@ -3,7 +3,7 @@
 from intelecom.intelecom import MsisdnMatchError
 import pytest
 
-from app.handlers.profile import (
+from app.handlers.profile_handler import (
     account_balance,
     account_info,
     profile_status
