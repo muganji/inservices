@@ -1,147 +1,159 @@
-# The airtime_handler.py handles the business logic that comprises of crediting and debiting airtime to a valid MSIDN.
+# The airtime_handler.py handles the business logic.
+
 from intelecom.intelecom import INConnection
+
 
 from app import app
 
-from app.handlers.profile import account_balance, account_info, profile_status
+
+from app.handlers.profile import account_info
 
 
 from app.models.user import User
 
 
-class creditAirtime():
-    def msidnvalidity(self, msidn: str, current_user: User) -> bool:
-        """
-        The msidnValidity method checks whether the supplied msidn exists, returns True if yes and False otherwise.
-        argument = a msidn of a client or agent.
-        return status either True or False.
-        """
-        isValid = False
-        userProfile = profile_status(msidn, current_user)
-        if msidn in iter(userProfile.values()):
-            isValid = True
-        else:
-            print("The supplied ",msidn," doesn't exist in the database.")
-            isValid = False
-        return isValid
+def msisdnValidity(msisdn: str, current_user: User) -> bool:
+    """Checks whether MSISDN account exists in the database.
+
+    Parameters
+    ----------
+    msisdn : str
+        MSISDN number for the account whose validity is being checked.
+
+    current_user : User
+        User performing the MSISDN validity query.
+
+    Returns
+    -------
+    bool
+        Returns True if the MSISDN exists and False otherwise.
+    """
+    account_details = account_info(msisdn, current_user)
+    return msisdn == account_details['mobileNumber']
 
 
-    def paying_account(self,msidn: str, current_user: User) -> bool:
-        isValid =False
-        userProfile = profile_status(msidn, current_user)
-        if msidn in iter(userProfile.values()):
-            isValid = True
-        else:
-            isValid = False
-            print('This paying account number',msidn ,'does not exist')
-        return isValid
+def account_Balance(msisdn: str, current_user: User) ->int:
+    """Checks whether MSISDN has balance on the account.
+
+    Parameters
+    ----------
+    msisdn : str
+        MSISDN number for the account whose balance is being required.
+
+    current_user : User
+        User performing the account balance status query.
+
+    Returns
+    -------
+    str
+        Returns the balance attached on the MSISDN.
+    """
+    account_details = account_info(msisdn, current_user)
+    msisdn_balance = float(account_details['balance'])
+    return msisdn_balance
 
 
-    def check_Crediting_Account_Balance(self, msidn: str, current_user: User) -> str:
-        acc = account_balance(msidn, current_user)
-        balance: str
-        if msidn in iter(acc.values()):
-            balance = acc.get('balance')
-        else:
-            print("The supplied ",msidn," doesn't have balance.")
-        return balance
+def account_bal_GTE(msisdn: str, amount: float, current_user: User) -> bool:
+    """Checks whether MSISDN account balance is GTE to the supplied Amount.
 
-    def check_is_account_bal_GTE(self, msidn: str, current_user: User, amount: float) -> bool:
-        isBalanceGTE = False
-        acc = account_balance(msidn, current_user)
-        if msidn in iter(acc.values()):
-            if acc['balance'] >= amount:
-                isBalanceGTE = True
-            else:
-                isBalanceGTE = False
-        return isBalanceGTE
-        
-    def check_is_account_bal_LTE(self,msidn: str, current_user: User,amount: float) -> bool:
-        isBalanceLTE = False
-        acc = account_balance(msidn, current_user)
-        if msidn in iter(acc.values()):
-            if acc['balance'] <= amount:
-                isBalanceLTE = True
-            else:
-                isBalanceLTE = False
-        return isBalanceLTE
-        
+    Parameters
+    ----------
+    msisdn : str
+        MSISDN number for the account whose balance is matched aganist.
+    amount : float
+        Money to be credited or debited on a MSISDN account.
+    current_user : User
+        User performing the balance comparison query.
 
-    def deduct_amount_from_msidn(self,msidn: str, current_user: User,amount: float) -> str:
-        newBalance: float
-        acc = account_balance(msidn, current_user)
-        if msidn in iter(acc.values()):
-            balance = float(acc.get('balance'))
-            newBalance = balance - amount
-            balToString = acc['balance'] = newBalance
-            return balToString
-        else:
-            print('We only debit a valid msidn')
-        return
-
-    def credit_msidn(self,msidn: str, current_user: User,amount: float) -> str:
-        newBalance: float
-        acc = account_balance(msidn, current_user)
-        if msidn in iter(acc.values()):
-            balance = float(acc.get('balance'))
-            newBalance = balance + amount
-            balToString = acc['balance'] = newBalance
-            return balToString
-        else:
-            print('We only debit a valid msidn')
-        return
+    Returns
+    -------
+    bool
+        Returns True if the MSISDN account balance is GTE, False otherwise.
+    """
+    account_details = account_info(msisdn, current_user)
+    msisdn_balance = float(account_details['balance'])
+    return msisdn_balance >= amount
 
 
-class debitAirtime():
-    def msidnvalidity(self, msidn: str, current_user: User) -> bool:
-        isValid = False
-        userProfile = profile_status(msidn, current_user)
-        if msidn in iter(userProfile.values()):
-            isValid = True
-        else:
-            print("The supplied ",msidn," doesn't exist in the database.")
-            isValid = False
-        return isValid
-        
-    def msidn_balance_status(self,msidn: str, current_user: User) -> float:
-        acc = account_balance(msidn, current_user)
-        balance: str
-        if msidn in iter(acc.values()):
-            balance = acc.get('balance')
-        else:
-            print("The supplied ",msidn," doesn't have balance.")
-        return balance
+def account_bal_LTE(msisdn: str, amount: float, current_user: User) -> bool:
+    """Checks whether MSISDN account balance is GTE to the supplied Amount.
 
-    def deduct_amount(self,msidn: str, current_user: User,amount: float)-> float:
-        newBalance: float
-        acc = account_balance(msidn, current_user)
-        if msidn in iter(acc.values()):
-            balance = float(acc.get('balance'))
-            newBalance = balance - amount
-            balToString = acc['balance'] = newBalance
-            return balToString
-        else:
-            print('We only debit a valid msidn')
-        return
+    Parameters
+    ----------
+    msisdn : str
+        MSISDN number for the account whose balance is matched aganist.
+    amount : float
+        Money to be credited or debited on a MSISDN account.
+    current_user : User
+        User performing the balance comparison query.
+
+    Returns
+    -------
+    bool
+        Returns True if the MSISDN account balance is GTE, False otherwise.
+    """
+    account_details = account_info(msisdn, current_user)
+    msisdn_balance = float(account_details['balance'])
+    return msisdn_balance <= amount
 
 
-    def debit_is_account_bal_GTE(self,msidn: str, current_user: User,amount: float) -> bool:
-        isBalanceGTE = False
-        acc = account_balance(msidn, current_user)
-        if msidn in iter(acc.values()):
-            if acc['balance'] >= amount:
-                isBalanceGTE = True
-            else:
-                isBalanceGTE = False
-        return isBalanceGTE
+def debit_msisdn_account(msisdn: str, amount: float, current_user: User,):
+    """Debits the MSISDN account with the new amount..
+
+    Parameters
+    ----------
+    msisdn : str
+        MSISDN number for the account whose balance to be debited.
+    amount : float
+        Money to be debited on a MSISDN account.
+    current_user : User
+        User performing the deduction amount query.
+
+    Returns
+    -------
+    bool
+        Returns True if the MSISDN account balance is debited, False otherwise.
+    """
+    with INConnection(
+            app.config['IN_SERVER']['HOST'],
+            current_user.mml_username,
+            current_user.mml_password,
+            app.config['IN_SERVER']['PORT'],
+            app.config['IN_SERVER']['BUFFER_SIZE']) as in_connection:
+
+        return in_connection.debit_account(
+            msisdn,
+            amount,
+            current_user.mml_username
+        )
 
 
-def debit_is_account_bal_LTE(self,msidn: str, current_user: User,amount: float) -> bool:
-        isBalanceLTE = False
-        acc = account_balance(msidn, current_user)
-        if msidn in iter(acc.values()):
-            if acc['balance'] <= amount:
-                isBalanceLTE = True
-            else:
-                isBalanceLTE = False
-        return isBalanceLTE
+def credit_msisdn_account(msisdn: str, amount: float, current_user: User):
+    """Credits the MSISDN account with a new amount.
+
+    Parameters
+    ----------
+    msisdn : str
+        MSISDN number for the account whose balance is to be credited.
+    amount : float
+        Money to be credited on a MSISDN account.
+    current_user : User
+        User performing the crediting account query.
+
+    Returns
+    -------
+    bool
+        Returns True if the MSISDN account balance is credited False otherwise.
+    """
+    with INConnection(
+            app.config['IN_SERVER']['HOST'],
+            current_user.mml_username,
+            current_user.mml_password,
+            app.config['IN_SERVER']['PORT'],
+            app.config['IN_SERVER']['BUFFER_SIZE']) as in_connection:
+
+        return in_connection.credit_account(
+            msisdn,
+            amount,
+            current_user.mml_username
+        )

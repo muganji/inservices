@@ -22,3 +22,8 @@ def msisdn_is_valid(msisdn: str) -> bool:
         valid_msisdn = True
 
     return valid_msisdn
+
+
+class InvalidMsisdnError(ValueError):
+    """Error raised when MSISDN is invalid"""
+    pass
