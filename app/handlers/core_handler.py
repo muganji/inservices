@@ -5,7 +5,7 @@ import logging
 from random import randint
 import re
 
-from app import logger
+from app.inservices import logger
 
 
 def msisdn_is_valid(msisdn: str) -> bool:
@@ -29,7 +29,12 @@ def msisdn_is_valid(msisdn: str) -> bool:
     return valid_msisdn
 
 
-def write_log(log_level: int, platform: str, category: str, message: str, user: str):
+def write_log(
+    log_level: int,
+    platform: str,
+    category: str,
+    message: str,
+    user: str):
     """Write custom log.
 
     Parameters
@@ -61,9 +66,4 @@ def transactionid_generator():
     now = datetime.today()
     date_part = now.strftime('%Y%m%d%H%M%S')
     random_part = randint(1000, 9999)
-    return f'{date_part}{random_part}'
-
-
-class InvalidMsisdnError(ValueError):
-    """Error raised when MSISDN is invalid"""
-    pass
+    return (f'{date_part}{random_part}', now.strftime('%Y-%m-%d %H:%M:%S'))

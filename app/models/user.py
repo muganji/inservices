@@ -1,5 +1,8 @@
-from app import db, login
+"""user module
+"""
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from app.inservices import db, login
 
 
 @login.user_loader
@@ -34,19 +37,28 @@ class User(db.Model):
     def set_password(self, password):
         """Creates the password hash"""
         self.password_hash = generate_password_hash(password)
-    
+
     def check_password(self, password):
         """Checks if password matches the password hash"""
         return check_password_hash(self.password_hash, password)
-    
+
     def valid_username(self):
+        """Checks to make sure that username is unique.
+        """
         return len(User.query.filter_by(username=self.username).all()) < 1
-    
+
     def valid_public_id(self):
+        """Checks to make sure that the public id is unique.
+        """
         return len(User.query.filter_by(public_id=self.public_id).all()) < 1
-    
+
     def valid_mml_username(self):
-        return len(User.query.filter_by(mml_username=self.mml_username).all()) < 1
-    
+        """Checks if the MML username is unique.
+        """
+        return len(
+            User.query.filter_by(mml_username=self.mml_username).all()) < 1
+
     def valid_mml_password(self):
+        """Checks if the MML password is unique.
+        """
         return len(User.query.filter_by(mml_password=self.mml_password).all()) < 1

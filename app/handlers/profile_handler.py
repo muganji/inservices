@@ -5,7 +5,7 @@ from datetime import datetime
 
 from intelecom.intelecom import INConnection
 
-from app import app
+from app.inservices import app
 from app.handlers.core_handler import write_log
 from app.models.user import User
 

@@ -1,5 +1,6 @@
 """Profile handler unit tests.
 """
+from unittest.mock import Mock, patch
 from intelecom.intelecom import MsisdnMatchError
 import pytest
 

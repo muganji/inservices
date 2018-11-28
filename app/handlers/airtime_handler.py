@@ -3,7 +3,7 @@
 from intelecom.intelecom import INConnection
 
 
-from app import app
+from app.inservices import app
 
 
 from app.handlers.profile_handler import account_info

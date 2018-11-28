@@ -1,7 +1,7 @@
-from flask import Blueprint
+"""accounts routes module.
+"""
 
-
-blueprint_api_accounts = Blueprint('blueprint_api_accounts', __name__)
+from app.routes import blueprint_api_accounts
 
 
 @blueprint_api_accounts.route('/')

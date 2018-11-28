@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from intelecom.intelecom import INConnection
 
 
-from app import app
+from app.inservices import app
 from app.models.user import User
 
 
