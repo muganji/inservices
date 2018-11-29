@@ -2,7 +2,7 @@
 """
 from datetime import datetime
 
-from app import db
+from app.inservices import db
 
 
 class UserToken(db.Model):
