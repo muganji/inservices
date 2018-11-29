@@ -25,7 +25,6 @@ def login():
             {'WWW-Authenticate': 'Basic realm="Login required!"'})
 
     user = User.query.filter_by(username=auth.username).first()
-    print('password_hash', user.password_hash, 'password:', auth.password)
 
     if not user:
         return make_response(
@@ -49,7 +48,6 @@ def login():
 
         return jsonify({'token': token.decode('UTF-8')}), 200
 
-    print('password has check failed')
     return make_response(
         'INVALID USERNAME OR PASSWORD',
         403,
@@ -61,17 +59,16 @@ def create():
     """Route to create user accounts.
     """
     data = request.get_json()
-    print(type(data), data)
     new_user = User(
         public_id=uuid.uuid4(),
-        username=data['username'],
-        is_admin=data['is_admin'],
-        is_active=data['is_active'],
-        can_debit=data['can_debit'],
-        can_credit=data['can_credit'],
-        mml_username=data['mml_username'],
-        mml_password=data['mml_password'],
-        user_type=data['user_type']
+        username=data['Username'],
+        is_admin=data['IsAdmin'],
+        is_active=data['IsActive'],
+        can_debit=data['CanDebit'],
+        can_credit=data['CanCredit'],
+        mml_username=data['MmlUsername'],
+        mml_password=data['MmlPassword'],
+        user_type=data['UserType']
     )
 
     if new_user.is_valid():
