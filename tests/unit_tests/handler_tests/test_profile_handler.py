@@ -201,3 +201,103 @@ def test_credit_airtime_failure(mock_credit_account, mock_login, mock_logout):
 
     # Assert
     assert not success_result
+
+@patch.object(INConnection, 'logout')
+@patch.object(INConnection, 'login')
+@patch.object(INConnection, 'purchase_package')
+def test_purchase_package_returns_dict(mock_purchase_package, mock_login, mock_logout):
+    # Arrange
+    mock_msisdn = '71187734'
+    mock_package_type = '3'
+    mock_package_grade = '1'
+    mock_profile = '9'
+    mock_current_user = Mock()
+    mock_purchase_package.return_value = True
+    mock_host = '172.18.0.2'
+    mock_port = 7090
+    mock_buffer_size = 4096
+    prepaid_request = INRequestHandler(
+        host=mock_host,
+        port=mock_port,
+        buffer_size=mock_buffer_size)
+
+    # Act
+    success_result = prepaid_request.purchase_package(
+        msisdn=mock_msisdn,
+        current_profile=mock_profile,
+        package_type=mock_package_type,
+        current_user=mock_current_user,
+        package_grade=mock_package_grade)
+
+    # Assert
+    assert isinstance(success_result, dict)
+
+@patch.object(INConnection, 'logout')
+@patch.object(INConnection, 'login')
+@patch.object(INConnection, 'purchase_package')
+def test_purchase_package_return_value(mock_purchase_package, mock_login, mock_logout):
+    # Arrange
+    mock_msisdn = '71187734'
+    mock_package_type = '3'
+    mock_package_grade = '1'
+    mock_profile = '9'
+    mock_current_user = Mock()
+    mock_purchase_package.return_value = True
+    mock_host = '172.18.0.2'
+    mock_port = 7090
+    mock_buffer_size = 4096
+    prepaid_request = INRequestHandler(
+        host=mock_host,
+        port=mock_port,
+        buffer_size=mock_buffer_size)
+
+    # Act
+    success_result = prepaid_request.purchase_package(
+        msisdn=mock_msisdn,
+        current_profile=mock_profile,
+        package_type=mock_package_type,
+        current_user=mock_current_user,
+        package_grade=mock_package_grade)
+
+    # Assert
+    assert success_result == {
+        'operationResult': 'OK',
+        'msisdn': mock_msisdn,
+        'packageType': mock_package_type,
+        'packageGrade': mock_package_grade
+    }
+
+@patch.object(INConnection, 'logout')
+@patch.object(INConnection, 'login')
+@patch.object(INConnection, 'purchase_package')
+def test_purchase_package_failed(mock_purchase_package, mock_login, mock_logout):
+    # Arrange
+    mock_msisdn = '71187734'
+    mock_package_type = '3'
+    mock_package_grade = '1'
+    mock_profile = '9'
+    mock_current_user = Mock()
+    mock_purchase_package.return_value = False
+    mock_host = '172.18.0.2'
+    mock_port = 7090
+    mock_buffer_size = 4096
+    prepaid_request = INRequestHandler(
+        host=mock_host,
+        port=mock_port,
+        buffer_size=mock_buffer_size)
+
+    # Act
+    success_result = prepaid_request.purchase_package(
+        msisdn=mock_msisdn,
+        current_profile=mock_profile,
+        package_type=mock_package_type,
+        current_user=mock_current_user,
+        package_grade=mock_package_grade)
+
+    # Assert
+    assert success_result == {
+        'operationResult': 'FAILED',
+        'msisdn': mock_msisdn,
+        'packageType': mock_package_type,
+        'packageGrade': mock_package_grade
+    }

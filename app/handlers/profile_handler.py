@@ -137,19 +137,25 @@ class INRequestHandler():
     def purchase_package(
             self,
             msisdn: str,
+            current_profile: str,
             current_user: User,
             package_type: str,
-            package_grade: str = None
-        ) -> dict:
+            package_grade: str = None) -> dict:
         """[summary]
 
         Parameters
         ----------
         msisdn : str
             Mobile number purhasing the package.
+
+        current_profile : str
+            Current profile of the MSISDN.
+
         package_type : str
-            Packge type being purchased.
-        package_grade : str -- [description] (default: {None})
+            Package type being purchased.
+
+        package_grade : str
+            Package grade of the package type being purchased.
 
         Returns
         -------
@@ -164,39 +170,20 @@ class INRequestHandler():
                 self.port,
                 self.buffer_size) as in_connection:
 
-            # Collect account information befor package purchase.
-            network_account_info = dict(
-                in_connection.display_account_info(msisdn)
-            )
-
-            profile_before = network_account_info['SUBSCRIBERTYPE']
-            balance_before = network_account_info['ACCTLEFT']
-
             package_purchased = in_connection.purchase_package(
                 msisdn,
                 package_type,
                 package_grade
             )
 
-            # Collect account information after package purchase.
-            network_account_info = dict(
-                in_connection.display_account_info(msisdn)
-            )
-
             if package_purchased:
                 operation_result = 'OK'
-                profile_after = network_account_info['SUBSCRIBERTYPE']
-                balance_before = network_account_info['ACCTLEFT']
             else:
                 operation_result = 'FAILED'
-                profile_after = network_account_info['SUBSCRIBERTYPE']
-                balance_after = network_account_info['ACCTLEFT']
 
             return {
                 'operationResult': operation_result,
                 'msisdn': msisdn,
-                'balanceBefore': balance_before,
-                'profileBefore': profile_before,
-                'balanceAfter': balance_after,
-                'profileAfter': profile_after
+                'packageType': package_type,
+                'packageGrade': package_grade
             }
