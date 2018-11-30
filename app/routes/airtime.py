@@ -10,7 +10,8 @@ from app.models.usertoken import UserToken
 from app.routes import blueprint_api_airtime
 from app.handlers.profile_handler import INRequestHandler
 
-@blueprint_api_airtime.route('/debit', method=['POST'])
+
+@blueprint_api_airtime.route('/debit', methods=['POST'])
 @token_required
 def debit_msisdn(current_user: User, transaction_id: str):
     data = request.get_json()
@@ -44,7 +45,7 @@ def debit_msisdn(current_user: User, transaction_id: str):
     return jsonify(debit_response), status_code
 
 
-@blueprint_api_airtime.route('/credit', method=['POST'])
+@blueprint_api_airtime.route('/credit', methods=['POST'])
 @token_required
 def credit_msisdn(current_user: User, transaction_id: str):
     data = request.get_json()
@@ -75,4 +76,5 @@ def credit_msisdn(current_user: User, transaction_id: str):
         }
         status_code = 400
     return jsonify(credit_response), status_code
-   
+
+
