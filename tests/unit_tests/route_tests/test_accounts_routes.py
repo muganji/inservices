@@ -84,9 +84,15 @@ def test_create_account(
     """
     mock_user_query.filter_by.return_value.first.return_value = User(
         username='vasuser',
-        public_id='f974c6bb-862d-4138-9fe4-b3ea1b70c7d2'
+        public_id='f974c6bb-862d-4138-9fe4-b3ea1b70c7d2',
+        is_admin=True,
+        is_active=True
     )
-    mock_token_decoder.return_value = Mock()
+    mock_token_decoder.return_value = {
+        'public_id': 'public_id=f974c6bb-862d-4138-9fe4-b3ea1b70c7d2',
+        'is_admin': True,
+        'is_active': True
+    }
     mock_add = Mock()
     mock_commit = Mock()
     mock_is_valid.return_value = True
