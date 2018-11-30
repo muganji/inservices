@@ -32,4 +32,5 @@ def transactionid_generator():
     now = datetime.today()
     date_part = now.strftime('%Y%m%d%H%M%S')
     random_part = randint(1000, 9999)
-    return (f'{date_part}{random_part}', now.strftime('%Y-%m-%d %H:%M:%S'))
+    transaction_id = f'{date_part}{random_part}'
+    return transaction_id
