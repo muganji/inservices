@@ -41,6 +41,5 @@ def test_transactionid_generator():
     result = core_handler.transactionid_generator()
 
     # Assert
-    assert isinstance(result, tuple)
-    transaction_id, __ = result
-    assert len(transaction_id) == 18
+    assert isinstance(result, str)
+    assert len(result) == 18

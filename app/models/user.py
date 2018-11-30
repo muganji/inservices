@@ -37,6 +37,12 @@ class User(db.Model):
     virtual_number = db.Column(db.String(20), unique=True)
     user_type = db.Column(db.String(10))
 
+    def __repr__(self):
+        return 'User(public_id=%s, username=%s)' % (
+            self.public_id,
+            self.username
+        )
+
     def set_password(
             self,
             size=6,
