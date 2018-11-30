@@ -72,7 +72,8 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Julius Muganji** - [PurpleBooth](https://github.com/muganji)
+* **Joseph Serunjogi** - [Profile](https://github.com/joeseggie)
+* **Julius Muganji** - [Profile](https://github.com/muganji)
 
 <!--See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
