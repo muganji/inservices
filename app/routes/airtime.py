@@ -4,12 +4,14 @@ from flask import jsonify, make_response, request
 import jwt
 
 from app import app, db, logger
+from app.decorators import token_required
 from app.models.user import User
 from app.models.usertoken import UserToken
 from app.routes import blueprint_api_airtime
 from app.handlers.profile_handler import INRequestHandler
 
 @blueprint_api_airtime.route('/debit', method=['POST'])
+@token_required
 def debit_msisdn(current_user: User, transaction_id: str):
     data = request.get_json()
     request_manager = INRequestHandler(
@@ -43,6 +45,7 @@ def debit_msisdn(current_user: User, transaction_id: str):
 
 
 @blueprint_api_airtime.route('/credit', method=['POST'])
+@token_required
 def credit_msisdn(current_user: User, transaction_id: str):
     data = request.get_json()
     request_manager = INRequestHandler(
