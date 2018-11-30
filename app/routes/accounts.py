@@ -123,7 +123,9 @@ def create(current_user: User, transaction_id: str):
         repr(new_user),
         current_user.username
     )
-    return make_response(
-        'USER CREDENTIALS ARE ALREADY TAKEN',
-        409
-    )
+    return jsonify(
+        {
+            'transactionId': transaction_id,
+            'operationResult': 'NEW USER CREDENTIALS ALREADY TAKEN'
+        }
+    ), 409
