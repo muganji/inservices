@@ -1,21 +1,20 @@
-import json
-from unittest.mock import Mock, patch
+
+from unittest.mock import patch
 
 from app import app
-from app.models.user import User
+
 from intelecom.intelecom import INConnection
 
-from app.handlers.profile_handler import INRequestHandler
 from app.routes import profile
-from app.decorators import token_required
+
 
 @patch('app.models.user.User.query')
 @patch('jwt.decode')
 @patch.object(INConnection, 'logout')
 @patch.object(INConnection, 'login')
-@patch.object(profile, 'get_msisdn_status')
+#@patch.object(profile, 'get_msisdn_status')
 def test_msisdn_status(
-        mock_account_info,
+        #mock_account_info,
         mock_login,
         mock_logout,
         mock_token,
@@ -26,11 +25,7 @@ def test_msisdn_status(
     msisdn = '712306172'
     with app.test_client() as test_app:
         headers = {
-            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJs'
-                              'aWNfaWQiOiI3ODM1MGFlMy0yYThiLTQzYmItYWVmMS02M'
-                              'WE3YWI1NGM4ODUiLCJleHAiOjE1NDI3OTY1NTF9.4HCZN'
-                              '00ppXyhg8KnkZ_mTABe-9q60Fw-bro3HlBUSR4'
-            
+            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiJjOTUxZmY2NC0wOTZiLTRkODYtYjRlNS03OGEwYzVlZTllNzUiLCJleHAiOjE1NDM1OTEzODF9.mF5FLJcZAQYOA-oZemxmIL6qcqd0qA3OrEdvRpijH_A'
         }
         response = test_app.get(
             f'/inservices/api/v1.0/profile/status/{msisdn}',
@@ -44,9 +39,9 @@ def test_msisdn_status(
 @patch('jwt.decode')
 @patch.object(INConnection, 'logout')
 @patch.object(INConnection, 'login')
-@patch.object(profile, 'get_msisdn_status')
+#@patch.object(profile, 'get_msisdn_status')
 def test_msisdn_status_fails(
-        mock_account_info,
+        #mock_account_info,
         mock_login,
         mock_logout,
         mock_token,
@@ -57,11 +52,7 @@ def test_msisdn_status_fails(
     msisdn = '712306173'
     with app.test_client() as test_app:
         headers = {
-            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJs'
-                              'aWNfaWQiOiI3ODM1MGFlMy0yYThiLTQzYmItYWVmMS02M'
-                              'WE3YWI1NGM4ODUiLCJleHAiOjE1NDI3OTY1NTF9.4HCZN'
-                              '00ppXyhg8KnkZ_mTABe-9q60Fw-bro3HlBUSR4'
-            
+            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiJjOTUxZmY2NC0wOTZiLTRkODYtYjRlNS03OGEwYzVlZTllNzUiLCJleHAiOjE1NDM1OTEzODF9.mF5FLJcZAQYOA-oZemxmIL6qcqd0qA3OrEdvRpijH_A'
         }
         response = test_app.get(
             f'/inservices/api/v1.0/profile/status/{msisdn}',
@@ -75,9 +66,9 @@ def test_msisdn_status_fails(
 @patch('jwt.decode')
 @patch.object(INConnection, 'logout')
 @patch.object(INConnection, 'login')
-@patch.object(profile, 'get_msisdn_balance')
+#@patch.object(profile, 'get_msisdn_balance')
 def test_get_msisdn_balance(
-        mock_account_balance,
+        #mock_account_balance,
         mock_login,
         mock_logout,
         mock_token,
@@ -87,14 +78,9 @@ def test_get_msisdn_balance(
     Testing the msisdn profile status and balance.
     """
     msisdn = '712306173'
-   
     with app.test_client() as test_app:
         headers = {
-            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJs'
-                              'aWNfaWQiOiI3ODM1MGFlMy0yYThiLTQzYmItYWVmMS02M'
-                              'WE3YWI1NGM4ODUiLCJleHAiOjE1NDI3OTY1NTF9.4HCZN'
-                              '00ppXyhg8KnkZ_mTABe-9q60Fw-bro3HlBUSR4'
-            
+            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiJjOTUxZmY2NC0wOTZiLTRkODYtYjRlNS03OGEwYzVlZTllNzUiLCJleHAiOjE1NDM1OTEzODF9.mF5FLJcZAQYOA-oZemxmIL6qcqd0qA3OrEdvRpijH_A'
         }
         response = test_app.get(
             f'/inservices/api/v1.0/profile/balance/{msisdn}',
@@ -108,9 +94,9 @@ def test_get_msisdn_balance(
 @patch('jwt.decode')
 @patch.object(INConnection, 'logout')
 @patch.object(INConnection, 'login')
-@patch.object(profile, 'get_msisdn_balance')
+#@patch.object(profile, 'get_msisdn_balance')
 def test_get_msisdn_balance_fails(
-        mock_account_balance,
+        #mock_account_balance,
         mock_login,
         mock_logout,
         mock_token,
@@ -120,14 +106,9 @@ def test_get_msisdn_balance_fails(
     Testing the msisdn profile status and balance.
     """
     msisdn = '712306173'
-   
     with app.test_client() as test_app:
         headers = {
-            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJs'
-                              'aWNfaWQiOiI3ODM1MGFlMy0yYThiLTQzYmItYWVmMS02M'
-                              'WE3YWI1NGM4ODUiLCJleHAiOjE1NDI3OTY1NTF9.4HCZN'
-                              '00ppXyhg8KnkZ_mTABe-9q60Fw-bro3HlBUSR4'
-            
+            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiJjOTUxZmY2NC0wOTZiLTRkODYtYjRlNS03OGEwYzVlZTllNzUiLCJleHAiOjE1NDM1OTEzODF9.mF5FLJcZAQYOA-oZemxmIL6qcqd0qA3OrEdvRpijH_A'
         }
         response = test_app.get(
             f'/inservices/api/v1.0/profile/balance/{msisdn}',

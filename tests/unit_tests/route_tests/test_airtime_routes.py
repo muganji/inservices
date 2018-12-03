@@ -1,12 +1,10 @@
 import json
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 from app import app
-from app.models.user import User
 from intelecom.intelecom import INConnection
 from app.routes import airtime
-from app.handlers.profile_handler import INRequestHandler
-from app.decorators import token_required
+
 
 @patch('app.models.user.User.query')
 @patch('jwt.decode')
@@ -31,8 +29,7 @@ def test_debit_airtime(
             'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJs'
                               'aWNfaWQiOiI3ODM1MGFlMy0yYThiLTQzYmItYWVmMS02M'
                               'WE3YWI1NGM4ODUiLCJleHAiOjE1NDI3OTY1NTF9.4HCZN'
-                              '00ppXyhg8KnkZ_mTABe-9q60Fw-bro3HlBUSR4'
-            
+                              '00ppXyhg8KnkZ_mTABe-9q60Fw-bro3HlBUSR4'  
         }
         response = app_test.post(
             '/inservices/api/v1.0/airtime/debit',
@@ -48,7 +45,7 @@ def test_debit_airtime(
 @patch('jwt.decode')
 @patch.object(INConnection, 'logout')
 @patch.object(INConnection, 'login')
-@patch.object(airtime, 'debit_msisdn')        
+@patch.object(airtime, 'debit_msisdn')  
 def test_failed_debit_airtime(
     mock_debit_airtime,
     mock_login,
@@ -120,7 +117,7 @@ def test_credit_airtime(
 @patch('jwt.decode')
 @patch.object(INConnection, 'logout')
 @patch.object(INConnection, 'login')
-@patch.object(airtime, 'credit_msisdn')        
+@patch.object(airtime, 'credit_msisdn')
 def test_failed_credit_airtime(
     mock_credit_airtime,
     mock_login,
