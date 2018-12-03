@@ -4,6 +4,7 @@ from unittest.mock import Mock, patch
 from app import app
 from app.models.user import User
 from intelecom.intelecom import INConnection
+from app.routes import airtime
 from app.handlers.profile_handler import INRequestHandler
 from app.decorators import token_required
 
@@ -11,14 +12,17 @@ from app.decorators import token_required
 @patch('jwt.decode')
 @patch.object(INConnection, 'logout')
 @patch.object(INConnection, 'login')
-@patch.object(INRequestHandler, 'debit_airtime')
-def test_debit_airtime(mock_debit_airtime, mock_login, mock_logout, mock_token, mock_user):
+@patch.object(airtime, 'debit_msisdn')
+def test_debit_airtime(
+        mock_debit_airtime,
+        mock_login,
+        mock_logout,
+        mock_token,
+        mock_user
+):
     """
     Tests the debiting of airtime
     """
-    mock_token.return_value = {
-        'public_id': 'public_id=f974c6bb-862d-4138-9fe4-b3ea1b70c7d2'
-    }
     debitDetails = {'msisdn': '712306172', 'amount': 5000.0}
     with app.test_client() as app_test:
         headers = {
@@ -44,14 +48,17 @@ def test_debit_airtime(mock_debit_airtime, mock_login, mock_logout, mock_token, 
 @patch('jwt.decode')
 @patch.object(INConnection, 'logout')
 @patch.object(INConnection, 'login')
-@patch.object(INRequestHandler, 'debit_airtime')        
-def test_failed_debit_airtime(mock_debit_airtime, mock_login, mock_logout, mock_token, mock_user):
+@patch.object(airtime, 'debit_msisdn')        
+def test_failed_debit_airtime(
+    mock_debit_airtime,
+    mock_login,
+    mock_logout,
+    mock_token,
+    mock_user
+):
     """
     Tests the Failed debiting of airtime
     """
-    mock_token.return_value = {
-        'public_id': 'public_id=f974c6bb-862d-4138-9fe4-b3ea1b70c7d2'
-    }
     debitDetails = {'msisdn': '712306172', 'amount': 700.0}
     with app.test_client() as app_test:
         headers = {
@@ -77,14 +84,17 @@ def test_failed_debit_airtime(mock_debit_airtime, mock_login, mock_logout, mock_
 @patch('jwt.decode')
 @patch.object(INConnection, 'logout')
 @patch.object(INConnection, 'login')
-@patch.object(INRequestHandler, 'credit_airtime')
-def test_credit_airtime(mock_credit_airtime, mock_login, mock_logout, mock_token, mock_user):
+@patch.object(airtime, 'credit_msisdn')
+def test_credit_airtime(
+    mock_credit_airtime,
+    mock_login,
+    mock_logout,
+    mock_token,
+    mock_user
+):
     """
     Tests the crediting of airtime
     """
-    mock_token.return_value = {
-        'public_id': 'public_id=f974c6bb-862d-4138-9fe4-b3ea1b70c7d2'
-    }
     creditDetails = {'msisdn': '712306172', 'amount': 5000.0}
     with app.test_client() as app_test:
         headers = {
@@ -110,14 +120,17 @@ def test_credit_airtime(mock_credit_airtime, mock_login, mock_logout, mock_token
 @patch('jwt.decode')
 @patch.object(INConnection, 'logout')
 @patch.object(INConnection, 'login')
-@patch.object(INRequestHandler, 'credit_airtime')        
-def test_failed_credit_airtime(mock_credit_airtime, mock_login, mock_logout, mock_token, mock_user):
+@patch.object(airtime, 'credit_msisdn')        
+def test_failed_credit_airtime(
+    mock_credit_airtime,
+    mock_login,
+    mock_logout,
+    mock_token,
+    mock_user
+):
     """
     Tests the Failed crediting of airtime
     """
-    mock_token.return_value = {
-        'public_id': 'public_id=f974c6bb-862d-4138-9fe4-b3ea1b70c7d2'
-    }
     creditDetails = {'msisdn': '712306172', 'amount': 700.0}
     with app.test_client() as app_test:
         headers = {

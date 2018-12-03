@@ -70,25 +70,41 @@ def get_msisdn_balance(current_user: User, transaction_id: str, msisdn: str):
         port=app.config['IN_SERVER']['PORT'],
         buffer_size=app.config['IN_SERVER']['BUFFER_SIZE']
     )
-    successful_operation = request_manager.account_info(
-        msisdn=msisdn,
-        current_user=current_user
-    )
-    if successful_operation:
-        balance_response = {
-            'transactionalId': transaction_id,
-            'operationalResult': 'OK',
-            'msisdn': data['msisdn'],
-            'balance': data['balance']
+    try:
+        subscriber_balance = request_manager.account_info(
+            msisdn=msisdn,
+            current_user=current_user
+        )
+        response = {
+            'transactionId': transaction_id,
+            'operationResult': subscriber_balance['operationResult'],
+            'msisdn': msisdn,
+            'balance': subscriber_balance['status'],
+            'message': 'Balance query successful'
         }
         status_code = 200
-    else:
-        balance_response = {
-            'transactionalId': transaction_id,
-            'operationalResult': 'FAILED',
-            'msisdn': data['msisdn'],
-            'balance': data['balance']
-        }
-        status_code = 400
-    return jsonify(balance_response), status_code
 
+        logger.info(
+            'API - SYSTEM - %s - MSISDN(%s) balance query SUCCESS - %s',
+            transaction_id,
+            msisdn,
+            current_user.username
+        )
+    except INQueryError:
+        response = {
+            'transactionId': transaction_id,
+            'operationResult': 'FAILED',
+            'msisdn': msisdn,
+            'balance': None,
+            'message': 'Balance query failed'
+        }
+        status_code = 500
+
+        logger.info(
+            'API - SYSTEM - %s - MSISDN(%s) balance query FAILED with IN'
+            ' query error - %s',
+            transaction_id,
+            msisdn,
+            current_user.username
+        )
+    return jsonify(response), status_code

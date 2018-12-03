@@ -8,6 +8,7 @@ from app.decorators import token_required
 from app.models.user import User
 from app.models.usertoken import UserToken
 from app.routes import blueprint_api_airtime
+from intelecom.intelecom import INQueryError
 from app.handlers.profile_handler import INRequestHandler
 
 
@@ -20,27 +21,44 @@ def debit_msisdn(current_user: User, transaction_id: str):
         port=app.config['IN_SERVER']['PORT'],
         buffer_size=app.config['IN_SERVER']['BUFFER_SIZE']
     )
-    successful_operation = request_manager.debit_airtime(
-        msisdn=data['msisdn'],
-        amount=data['amount'],
-        current_user=current_user
-    )
-    if successful_operation:
+    try:
+        successful_operation = request_manager.debit_airtime(
+            msisdn=data['msisdn'],
+            amount=data['amount'],
+            current_user=current_user
+        )
         debit_response = {
-            'transactionalId': transaction_id,
-            'operationalResult': 'OK',
-            'msisdn': data['msisdn'],
-            'amount': data['amount']
+            'transactionId': transaction_id,
+            'operationResult': successful_operation['operationResult'],
+            'msisdn': successful_operation['msisdn'],
+            'amount': successful_operation['amount'],
+            'message': 'Debit query successful'
         }
         status_code = 200
-    else:
+        msisdn = successful_operation['msisdn']
+        logger.info(
+            'API - SYSTEM - %s - MSISDN(%s) debit query SUCCESS - %s',
+            transaction_id,
+            msisdn,
+            current_user.username
+        )
+    except INQueryError:
         debit_response = {
-            'transactionalId': transaction_id,
-            'operationalResult': 'FAILED',
-            'msisdn': data['msisdn'],
-            'amount': None
+            'transactionId': transaction_id,
+            'operationResult': successful_operation['operationResult'],
+            'msisdn': successful_operation['msisdn'],
+            'amount': None,
+            'message': 'Debit query failed'
         }
         status_code = 500
+
+        logger.info(
+            'API - SYSTEM - %s - MSISDN(%s) debit query FAILED with IN'
+            ' query error - %s',
+            transaction_id,
+            msisdn,
+            current_user.username
+        )
 
     return jsonify(debit_response), status_code
 
@@ -54,27 +72,44 @@ def credit_msisdn(current_user: User, transaction_id: str):
         port=app.config['IN_SERVER']['PORT'],
         buffer_size=app.config['IN_SERVER']['BUFFER_SIZE']
     )
-    successful_operation = request_manager.credit_airtime(
-        msisdn=data['msisdn'],
-        amount=data['amount'],
-        current_user=current_user
-    )
-    if successful_operation:
+    try:
+        successful_operation = request_manager.credit_airtime(
+            msisdn=data['msisdn'],
+            amount=data['amount'],
+            current_user=current_user
+        )
         credit_response = {
-            'transactionalId': transaction_id,
-            'operationalResult': 'OK',
-            'msisdn': data['msisdn'],
-            'amount': data['amount']
+            'transactionId': transaction_id,
+            'operationResult': successful_operation['operationResult'],
+            'msisdn': successful_operation['msisdn'],
+            'amount': successful_operation['amount'],
+            'message': 'Credit query successful'
         }
         status_code = 200
-    else:
+        msisdn = successful_operation['msisdn']
+        logger.info(
+            'API - SYSTEM - %s - MSISDN(%s) credit query SUCCESS - %s',
+            transaction_id,
+            msisdn,
+            current_user.username
+        )
+    except INQueryError:
         credit_response = {
-            'transactionalId': transaction_id,
-            'operationalResult': 'FAILED',
-            'msisdn': data['msisdn'],
-            'amount': None
+            'transactionId': transaction_id,
+            'operationResult': successful_operation['operationResult'],
+            'msisdn': successful_operation['msisdn'],
+            'amount': None,
+            'message': 'credit query failed'
         }
         status_code = 500
+
+        logger.info(
+            'API - SYSTEM - %s - MSISDN(%s) credit query FAILED with IN'
+            ' query error - %s',
+            transaction_id,
+            msisdn,
+            current_user.username
+        )
     return jsonify(credit_response), status_code
 
 
