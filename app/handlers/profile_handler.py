@@ -57,6 +57,7 @@ class INRequestHandler():
             account_status = int(query_result['ACNTSTAT'])
 
             profile_info = {
+                'operationResult': 'OK',
                 'mobileNumber': msisdn,
                 'balance': balance,
                 'subscriberProfile': subscriber_type

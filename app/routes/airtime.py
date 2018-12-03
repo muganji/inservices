@@ -38,9 +38,9 @@ def debit_msisdn(current_user: User, transaction_id: str):
             'transactionalId': transaction_id,
             'operationalResult': 'FAILED',
             'msisdn': data['msisdn'],
-            'amount': data['amount']
+            'amount': None
         }
-        status_code = 400
+        status_code = 500
 
     return jsonify(debit_response), status_code
 
@@ -72,9 +72,9 @@ def credit_msisdn(current_user: User, transaction_id: str):
             'transactionalId': transaction_id,
             'operationalResult': 'FAILED',
             'msisdn': data['msisdn'],
-            'amount': data['amount']
+            'amount': None
         }
-        status_code = 400
+        status_code = 500
     return jsonify(credit_response), status_code
 
 

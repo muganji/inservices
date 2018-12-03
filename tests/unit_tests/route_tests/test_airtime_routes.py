@@ -71,7 +71,7 @@ def test_failed_debit_airtime(mock_debit_airtime, mock_login, mock_logout, mock_
 
         )
 
-        assert response.status_code == 400
+        assert response.status_code == 500
 
 @patch('app.models.user.User.query')
 @patch('jwt.decode')
@@ -137,4 +137,4 @@ def test_failed_credit_airtime(mock_credit_airtime, mock_login, mock_logout, moc
 
         )
 
-        assert response.status_code == 400
+        assert response.status_code == 500
