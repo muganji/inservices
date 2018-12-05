@@ -70,6 +70,8 @@ def login():
 @blueprint_api_accounts.route('/create', methods=['POST'])
 @token_required
 def create(current_user: User, transaction_id: str):
+    # current_user = User(mml_username='vasuser', mml_password='pkgmml99', is_admin=True, is_active=True)
+    # transaction_id ='c951ff64-096b-4d86-b4e5-78a0c5ee9e75'
     """Route to create user accounts.
     """
     if not current_user.is_admin or not current_user.is_active:

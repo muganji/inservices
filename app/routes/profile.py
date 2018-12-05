@@ -1,14 +1,12 @@
+"""IN subscriber Profile Module for balance and status queries of MSISDN account
+"""
 
-import uuid
-
-from flask import jsonify, make_response, request
+from flask import jsonify
 from intelecom.intelecom import INQueryError
-import jwt
 
-from app import app, db, logger
+from app import app, logger
 from app.decorators import token_required
 from app.models.user import User
-from app.models.usertoken import UserToken
 from app.routes import blueprint_api_profile
 from app.handlers.profile_handler import INRequestHandler
 
@@ -16,6 +14,22 @@ from app.handlers.profile_handler import INRequestHandler
 @blueprint_api_profile.route('/status/<msisdn>', methods=['GET'])
 @token_required
 def get_msisdn_status(current_user: User, transaction_id: str, msisdn: str):
+    """Get the MSISDN account Status.
+
+        Parameters
+        ----------
+        current_user : User
+            User performing the profile debit query.
+        transaction_id : str
+            Transaction_id number for the debit transaction.
+        msisdn: str
+            MSISDN number for the account whose status is queried.
+
+        Returns
+        -------
+        dict
+            Transaction details, account status and the status code.
+        """
     request_manager = INRequestHandler(
         host=app.config['IN_SERVER']['HOST'],
         port=app.config['IN_SERVER']['PORT'],
@@ -65,6 +79,22 @@ def get_msisdn_status(current_user: User, transaction_id: str, msisdn: str):
 @blueprint_api_profile.route('/balance/<msisdn>', methods=['GET'])
 @token_required
 def get_msisdn_balance(current_user: User, transaction_id: str, msisdn: str):
+    """Get the MSISDN account balance.
+
+        Parameters
+        ----------
+        current_user : User
+            User performing the profile debit query.
+        transaction_id : str
+            Transaction_id number for the debit transaction.
+        msisdn: str
+            MSISDN number for the account whose balance is queried.
+
+        Returns
+        -------
+        dict
+            Transaction details, account balance and the status code.
+        """
     request_manager = INRequestHandler(
         host=app.config['IN_SERVER']['HOST'],
         port=app.config['IN_SERVER']['PORT'],
@@ -79,7 +109,7 @@ def get_msisdn_balance(current_user: User, transaction_id: str, msisdn: str):
             'transactionId': transaction_id,
             'operationResult': subscriber_balance['operationResult'],
             'msisdn': msisdn,
-            'balance': subscriber_balance['status'],
+            'balance': subscriber_balance['balance'],
             'message': 'Balance query successful'
         }
         status_code = 200
