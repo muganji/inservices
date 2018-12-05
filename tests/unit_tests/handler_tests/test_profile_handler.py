@@ -3,7 +3,6 @@
 from unittest.mock import Mock, patch
 from intelecom.intelecom import INConnection, MsisdnMatchError
 import pytest
-
 from app.handlers.profile_handler import INRequestHandler
 from app.models.user import User
 
@@ -60,6 +59,7 @@ def test_account_info_return_value(mock_display_account_info, mock_login, mock_l
 
     # Assert
     assert result == {
+        'operationResult': 'OK',
         'mobileNumber': mock_msisdn,
         'balance': 12300.0,
         'subscriberProfile': '9',
@@ -92,6 +92,7 @@ def test_account_info_return_notactive_account(mock_display_account_info, mock_l
 
     # Assert
     assert result == {
+        'operationResult': 'OK',
         'mobileNumber': mock_msisdn,
         'balance': 12300.0,
         'subscriberProfile': '9',

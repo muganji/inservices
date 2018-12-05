@@ -21,7 +21,7 @@ def test_login_authorized():
     """Test authorized request returns success HTTP status code.
     """
     with app.test_client() as app_test:
-        encoded_credentials = b64encode(b"vasuser:1iyDjV")
+        encoded_credentials = b64encode(b"admin_julio:Q6sXgK")
         auth = encoded_credentials.decode('utf-8')
         response = app_test.get(
             '/inservices/api/v1.0/accounts/login',
@@ -37,7 +37,7 @@ def test_login_user_not_found(mock_user_query):
     mock_user_query.filter_by.return_value.first.return_value = None
 
     with app.test_client() as app_test:
-        encoded_credentials = b64encode(b"vasuser:1iyDjV")
+        encoded_credentials = b64encode(b"admin_julio:Q6sXgK")
         auth = encoded_credentials.decode('utf-8')
         response = app_test.get(
             '/inservices/api/v1.0/accounts/login',
@@ -53,7 +53,7 @@ def test_login_invalid_password(mock_check_password):
     mock_check_password.return_value = False
 
     with app.test_client() as app_test:
-        encoded_credentials = b64encode(b"vasuser:1iyDjV")
+        encoded_credentials = b64encode(b"admin_julio:Q6sXgK")
         auth = encoded_credentials.decode('utf-8')
         response = app_test.get(
             '/inservices/api/v1.0/accounts/login',
@@ -79,13 +79,13 @@ def test_create_account(
     """Test authorized request returns success HTTP status code.
     """
     mock_user_query.filter_by.return_value.first.return_value = User(
-        username='vasuser',
+        username='admin_julio',
         public_id='f974c6bb-862d-4138-9fe4-b3ea1b70c7d2',
         is_admin=True,
         is_active=True
     )
     mock_token_decoder.return_value = {
-        'public_id': 'public_id=f974c6bb-862d-4138-9fe4-b3ea1b70c7d2',
+        'public_id': 'public_id=c084bee1-d6a8-4bef-9a89-e34aad2d885d',
         'is_admin': True,
         'is_active': True
     }
@@ -107,10 +107,7 @@ def test_create_account(
         headers = {
             'ContentType': 'application/json',
             'dataType': 'json',
-            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJs'
-                              'aWNfaWQiOiI3ODM1MGFlMy0yYThiLTQzYmItYWVmMS02M'
-                              'WE3YWI1NGM4ODUiLCJleHAiOjE1NDI3OTY1NTF9.4HCZN'
-                              '00ppXyhg8KnkZ_mTABe-9q60Fw-bro3HlBUSR4'
+            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiJjMDg0YmVlMS1kNmE4LTRiZWYtOWE4OS1lMzRhYWQyZDg4NWQiLCJleHAiOjE1NDM5MTM5OTN9.KugSYwHDWW0cHnqCUzgXYbhVau5-3SXy2N2Av4TsPT0'
         }
         response = app_test.post(
             '/inservices/api/v1.0/accounts/create',
@@ -150,13 +147,13 @@ def test_create_account_invalid_user(
     mock_is_valid.return_value = False
     mock_set_password.return_value = 'mock_password'
     mock_user_query.filter_by.return_value.first.return_value = User(
-        username='vasuser',
-        public_id='f974c6bb-862d-4138-9fe4-b3ea1b70c7d2',
+        username='admin_julio',
+        public_id='c084bee1-d6a8-4bef-9a89-e34aad2d885d',
         is_admin=False,
         is_active=True
     )
     mock_token_decoder.return_value = {
-        'public_id': 'public_id=f974c6bb-862d-4138-9fe4-b3ea1b70c7d2',
+        'public_id': 'public_id=c084bee1-d6a8-4bef-9a89-e34aad2d885d',
         'is_admin': False,
         'is_active': True
     }
@@ -174,10 +171,7 @@ def test_create_account_invalid_user(
         headers = {
             'ContentType': 'application/json',
             'dataType': 'json',
-            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJs'
-                              'aWNfaWQiOiI3ODM1MGFlMy0yYThiLTQzYmItYWVmMS02M'
-                              'WE3YWI1NGM4ODUiLCJleHAiOjE1NDI3OTY1NTF9.4HCZN'
-                              '00ppXyhg8KnkZ_mTABe-9q60Fw-bro3HlBUSR4'
+            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiJjMDg0YmVlMS1kNmE4LTRiZWYtOWE4OS1lMzRhYWQyZDg4NWQiLCJleHAiOjE1NDM5MTM5OTN9.KugSYwHDWW0cHnqCUzgXYbhVau5-3SXy2N2Av4TsPT0'
         }
         response = app_test.post(
             '/inservices/api/v1.0/accounts/create',
@@ -233,10 +227,7 @@ def test_create_account_invalid_token():
         headers = {
             'ContentType': 'application/json',
             'dataType': 'json',
-            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJs'
-                              'aWNfaWQiOiI3ODM1MGFlMy0yYThiLTQzYmItYWVmMS02M'
-                              'WE3YWI1NGM4ODUiLCJleHAiOjE1NDI3OTY1NTF9.4HCZN'
-                              '00ppXyhg8KnkZ_mTABe-9q60Fw-bro3HlBUSR4'
+            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiJjMDg0YmVlMS1kNmE4LTRiZWYtOWE4OS1lMzRhYWQyZDg4NWQiLCJleHAiOjE1NDM5MTM5OTN9.KugSYwHDWW0cHnqCUzgXYbhVau5-3SXy2N2Av4TsPT0'
         }
         account_creator = {
             'Username': 'mock_user',
@@ -274,10 +265,7 @@ def test_create_account_non_existent_user(
         headers = {
             'ContentType': 'application/json',
             'dataType': 'json',
-            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJs'
-                              'aWNfaWQiOiI3ODM1MGFlMy0yYThiLTQzYmItYWVmMS02M'
-                              'WE3YWI1NGM4ODUiLCJleHAiOjE1NDI3OTY1NTF9.4HCZN'
-                              '00ppXyhg8KnkZ_mTABe-9q60Fw-bro3HlBUSR4'
+            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiJjMDg0YmVlMS1kNmE4LTRiZWYtOWE4OS1lMzRhYWQyZDg4NWQiLCJleHAiOjE1NDM5MTM5OTN9.KugSYwHDWW0cHnqCUzgXYbhVau5-3SXy2N2Av4TsPT0'
         }
         account_creator = {
             'Username': 'mock_user',
@@ -291,7 +279,7 @@ def test_create_account_non_existent_user(
         }
         mock_user_query.filter_by.return_value.first.return_value = None
         mock_token_decoder.return_value = {
-            'public_id': 'public_id=f974c6bb-862d-4138-9fe4-b3ea1b70c7d2',
+            'public_id': 'public_id=c084bee1-d6a8-4bef-9a89-e34aad2d885d',
             'is_admin': False,
             'is_active': True
         }
@@ -337,13 +325,13 @@ def test_create_account_already_existing(
     mock_is_valid.return_value = False
     mock_set_password.return_value = 'mock_password'
     mock_user_query.filter_by.return_value.first.return_value = User(
-        username='vasuser',
-        public_id='f974c6bb-862d-4138-9fe4-b3ea1b70c7d2',
+        username='admin_julio',
+        public_id='c084bee1-d6a8-4bef-9a89-e34aad2d885d',
         is_admin=True,
         is_active=True
     )
     mock_token_decoder.return_value = {
-        'public_id': 'public_id=f974c6bb-862d-4138-9fe4-b3ea1b70c7d2',
+        'public_id': 'public_id=c084bee1-d6a8-4bef-9a89-e34aad2d885d',
         'is_admin': True,
         'is_active': True
     }
@@ -351,10 +339,7 @@ def test_create_account_already_existing(
         headers = {
             'ContentType': 'application/json',
             'dataType': 'json',
-            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJs'
-                              'aWNfaWQiOiI3ODM1MGFlMy0yYThiLTQzYmItYWVmMS02M'
-                              'WE3YWI1NGM4ODUiLCJleHAiOjE1NDI3OTY1NTF9.4HCZN'
-                              '00ppXyhg8KnkZ_mTABe-9q60Fw-bro3HlBUSR4'
+            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiJjMDg0YmVlMS1kNmE4LTRiZWYtOWE4OS1lMzRhYWQyZDg4NWQiLCJleHAiOjE1NDM5MTM5OTN9.KugSYwHDWW0cHnqCUzgXYbhVau5-3SXy2N2Av4TsPT0'
         }
 
         # Act
