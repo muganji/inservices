@@ -53,7 +53,6 @@ def test_debit_airtime(
             data=json.dumps(debitDetails),
             content_type='application/json',
             headers=headers
-
         )
         assert response.status_code == 200
 
@@ -89,8 +88,7 @@ def test_failed_debit_airtime(
         headers = {
             'ContentType': 'application/json',
             'dataType': 'json',
-            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiJjMDg0YmVlMS1kNmE4LTRiZWYtOWE4OS1lMzRhYWQyZDg4NWQiLCJleHAiOjE1NDM5MTM5OTN9.KugSYwHDWW0cHnqCUzgXYbhVau5-3SXy2N2Av4TsPT0'
-            
+            'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiJjMDg0YmVlMS1kNmE4LTRiZWYtOWE4OS1lMzRhYWQyZDg4NWQiLCJleHAiOjE1NDM5MTM5OTN9.KugSYwHDWW0cHnqCUzgXYbhVau5-3SXy2N2Av4TsPT0'    
         }
         response = app_test.post(
             '/inservices/api/v1.0/airtime/debit',
@@ -99,7 +97,6 @@ def test_failed_debit_airtime(
             headers=headers
 
         )
-
         assert response.status_code == 500
 
 @patch('jwt.decode')
@@ -147,17 +144,12 @@ def test_credit_airtime(
             data=json.dumps(creditDetails),
             content_type='application/json',
             headers=headers
-
         )
         assert response.status_code == 200 
 
 @patch('jwt.decode')
 @patch('app.models.user.User.query')
-@patch.object(
-        INRequestHandler,
-        'credit_airtime',
-        side_effect =INQueryError
-    )
+@patch.object(INRequestHandler, 'credit_airtime', side_effect =INQueryError)
 def test_failed_credit_airtime(
         mock_account_info,
         mock_user_query,
@@ -192,6 +184,5 @@ def test_failed_credit_airtime(
             headers=headers
 
         )
-
         assert response.status_code == 500
 
