@@ -67,7 +67,7 @@ def debit_msisdn(current_user: User, transaction_id: str):
             'API - SYSTEM - %s - MSISDN(%s) debit query FAILED with IN'
             ' query error - %s',
             transaction_id,
-            msisdn,
+            data['msisdn'],
             current_user.username
         )
 
