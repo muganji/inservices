@@ -70,7 +70,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). -->
 
-## Authors
+## Contributors
 
 * **Joseph Serunjogi** - [Profile](https://github.com/joeseggie)
 * **Julius Muganji** - [Profile](https://github.com/muganji)
