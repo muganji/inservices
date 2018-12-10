@@ -1,32 +1,30 @@
 """Profile handler unit tests.
 """
-from unittest.mock import Mock, patch
+from unittest import mock
 from intelecom.intelecom import INConnection, MsisdnMatchError
 import pytest
 
 from app.handlers.profile_handler import INRequestHandler
 from app.models.user import User
 
-@patch.object(INConnection, 'logout')
-@patch.object(INConnection, 'login')
-@patch.object(INConnection, 'display_account_info')
-def test_account_info_returns_dict(mock_display_account_info, mock_login, mock_logout):
+
+@mock.patch.object(INConnection, '__exit__')
+@mock.patch.object(INConnection, '__enter__')
+def test_account_info_returns_dict(
+    mock_inconnection_enter,
+    mock_inconnection_exit
+):
     # Arrange
-    mock_msisdn = Mock()
-    mock_current_user = Mock()
-    mock_display_account_info.return_value = {
+    mock_inconnection_enter.return_value.display_account_info.return_value = {
         'ACCLEFT': '12300',
         'SUBSCRIBERTYPE': '9',
         'ACNTSTAT': '1',
         'CALLSERVSTOP': '2019-03-12'
     }
-    mock_host = '172.18.0.2'
-    mock_port = 7090
-    mock_buffer_size = 4096
-    prepaid_request = INRequestHandler(
-        host=mock_host,
-        port=mock_port,
-        buffer_size=mock_buffer_size)
+    mock_inconnection_exit.return_value = None
+    mock_msisdn = mock.ANY
+    mock_current_user = mock.Mock()
+    prepaid_request = INRequestHandler(None, None, None)
 
     # Act
     result = prepaid_request.account_info(mock_msisdn, mock_current_user)
@@ -34,26 +32,24 @@ def test_account_info_returns_dict(mock_display_account_info, mock_login, mock_l
     # Assert
     assert isinstance(result, dict)
 
-@patch.object(INConnection, 'logout')
-@patch.object(INConnection, 'login')
-@patch.object(INConnection, 'display_account_info')
-def test_account_info_return_value(mock_display_account_info, mock_login, mock_logout):
+
+@mock.patch.object(INConnection, '__exit__')
+@mock.patch.object(INConnection, '__enter__')
+def test_account_info_return_value(
+    mock_inconnection_enter,
+    mock_inconnection_exit
+):
     # Arrange
-    mock_msisdn = '71187734'
-    mock_current_user = Mock()
-    mock_display_account_info.return_value = {
+    mock_inconnection_exit.return_value = None
+    mock_msisdn = mock.ANY
+    mock_current_user = mock.Mock()
+    mock_inconnection_enter.return_value.display_account_info.return_value = {
         'ACCLEFT': '12300',
         'SUBSCRIBERTYPE': '9',
         'ACNTSTAT': '1',
         'CALLSERVSTOP': '2019-03-12'
     }
-    mock_host = '172.18.0.2'
-    mock_port = 7090
-    mock_buffer_size = 4096
-    prepaid_request = INRequestHandler(
-        host=mock_host,
-        port=mock_port,
-        buffer_size=mock_buffer_size)
+    prepaid_request = INRequestHandler(None, None, None)
 
     # Act
     result = prepaid_request.account_info(mock_msisdn, mock_current_user)
@@ -66,26 +62,28 @@ def test_account_info_return_value(mock_display_account_info, mock_login, mock_l
         'status': 'ACTIVE'
     }
 
-@patch.object(INConnection, 'logout')
-@patch.object(INConnection, 'login')
-@patch.object(INConnection, 'display_account_info')
-def test_account_info_return_notactive_account(mock_display_account_info, mock_login, mock_logout):
+
+@mock.patch.object(INConnection, '__exit__')
+@mock.patch.object(INConnection, '__enter__')
+def test_account_info_return_notactive_account(
+    mock_inconnection_enter,
+    mock_inconnection_exit
+):
     # Arrange
-    mock_msisdn = '71187734'
-    mock_current_user = Mock()
-    mock_display_account_info.return_value = {
+    mock_inconnection_exit.return_value = None
+    mock_msisdn = mock.ANY
+    mock_current_user = mock.Mock()
+    mock_inconnection_enter.return_value.display_account_info.return_value = {
         'ACCLEFT': '12300',
         'SUBSCRIBERTYPE': '9',
         'ACNTSTAT': '1',
         'CALLSERVSTOP': '2018-03-12'
     }
-    mock_host = '172.18.0.2'
-    mock_port = 7090
-    mock_buffer_size = 4096
     prepaid_request = INRequestHandler(
-        host=mock_host,
-        port=mock_port,
-        buffer_size=mock_buffer_size)
+        None,
+        None,
+        None
+    )
 
     # Act
     result = prepaid_request.account_info(mock_msisdn, mock_current_user)
@@ -98,22 +96,24 @@ def test_account_info_return_notactive_account(mock_display_account_info, mock_l
         'status': 'NOT ACTIVE'
     }
 
-@patch.object(INConnection, 'logout')
-@patch.object(INConnection, 'login')
-@patch.object(INConnection, 'debit_account')
-def test_debit_airtime_success(mock_debit_account, mock_login, mock_logout):
+
+@mock.patch.object(INConnection, '__exit__')
+@mock.patch.object(INConnection, '__enter__')
+def test_debit_airtime_success(
+    mock_inconnection_enter,
+    mock_inconnection_exit
+):
     # Arrange
-    mock_msisdn = '71187734'
-    mock_amount = '5000'
-    mock_current_user = Mock()
-    mock_debit_account.return_value = True
-    mock_host = '172.18.0.2'
-    mock_port = 7090
-    mock_buffer_size = 4096
+    mock_inconnection_exit.return_value = None
+    mock_msisdn = mock.ANY
+    mock_amount = mock.ANY
+    mock_current_user = mock.Mock()
+    mock_inconnection_enter.return_value.debit_account.return_value = True
     prepaid_request = INRequestHandler(
-        host=mock_host,
-        port=mock_port,
-        buffer_size=mock_buffer_size)
+        None,
+        None,
+        None
+    )
 
     # Act
     success_result = prepaid_request.debit_airtime(
@@ -124,22 +124,23 @@ def test_debit_airtime_success(mock_debit_account, mock_login, mock_logout):
     # Assert
     assert success_result
 
-@patch.object(INConnection, 'logout')
-@patch.object(INConnection, 'login')
-@patch.object(INConnection, 'debit_account')
-def test_debit_airtime_failure(mock_debit_account, mock_login, mock_logout):
+
+@mock.patch.object(INConnection, '__exit__')
+@mock.patch.object(INConnection, '__enter__')
+def test_debit_airtime_failure(
+    mock_inconnection_enter,
+    mock_inconnection_exit
+):
     # Arrange
-    mock_msisdn = '71187734'
-    mock_amount = '5000'
-    mock_current_user = Mock()
-    mock_debit_account.return_value = False
-    mock_host = '172.18.0.2'
-    mock_port = 7090
-    mock_buffer_size = 4096
+    mock_msisdn = mock.ANY
+    mock_amount = mock.ANY
+    mock_current_user = mock.Mock()
+    mock_inconnection_enter.return_value.debit_account.return_value = False
     prepaid_request = INRequestHandler(
-        host=mock_host,
-        port=mock_port,
-        buffer_size=mock_buffer_size)
+        None,
+        None,
+        None
+    )
 
     # Act
     success_result = prepaid_request.debit_airtime(
@@ -150,22 +151,23 @@ def test_debit_airtime_failure(mock_debit_account, mock_login, mock_logout):
     # Assert
     assert not success_result
 
-@patch.object(INConnection, 'logout')
-@patch.object(INConnection, 'login')
-@patch.object(INConnection, 'credit_account')
-def test_credit_airtime_success(mock_credit_account, mock_login, mock_logout):
+
+@mock.patch.object(INConnection, '__exit__')
+@mock.patch.object(INConnection, '__enter__')
+def test_credit_airtime_success(
+    mock_inconnection_enter,
+    mock_inconnection_exit
+):
     # Arrange
-    mock_msisdn = '71187734'
-    mock_amount = '5000'
-    mock_current_user = Mock()
-    mock_credit_account.return_value = True
-    mock_host = '172.18.0.2'
-    mock_port = 7090
-    mock_buffer_size = 4096
+    mock_msisdn = mock.ANY
+    mock_amount = mock.ANY
+    mock_current_user = mock.Mock()
+    mock_inconnection_enter.return_value.credit_account.return_value = True
     prepaid_request = INRequestHandler(
-        host=mock_host,
-        port=mock_port,
-        buffer_size=mock_buffer_size)
+        None,
+        None,
+        None
+    )
 
     # Act
     success_result = prepaid_request.credit_airtime(
@@ -176,22 +178,23 @@ def test_credit_airtime_success(mock_credit_account, mock_login, mock_logout):
     # Assert
     assert success_result
 
-@patch.object(INConnection, 'logout')
-@patch.object(INConnection, 'login')
-@patch.object(INConnection, 'credit_account')
-def test_credit_airtime_failure(mock_credit_account, mock_login, mock_logout):
+
+@mock.patch.object(INConnection, '__exit__')
+@mock.patch.object(INConnection, '__enter__')
+def test_credit_airtime_failure(
+    mock_inconnection_enter,
+    mock_inconnection_exit
+):
     # Arrange
-    mock_msisdn = '71187734'
-    mock_amount = '5000'
-    mock_current_user = Mock()
-    mock_credit_account.return_value = False
-    mock_host = '172.18.0.2'
-    mock_port = 7090
-    mock_buffer_size = 4096
+    mock_msisdn = mock.ANY
+    mock_amount = mock.ANY
+    mock_current_user = mock.Mock()
+    mock_inconnection_enter.return_value.credit_account.return_value = False
     prepaid_request = INRequestHandler(
-        host=mock_host,
-        port=mock_port,
-        buffer_size=mock_buffer_size)
+        None,
+        None,
+        None
+    )
 
     # Act
     success_result = prepaid_request.credit_airtime(
@@ -202,24 +205,25 @@ def test_credit_airtime_failure(mock_credit_account, mock_login, mock_logout):
     # Assert
     assert not success_result
 
-@patch.object(INConnection, 'logout')
-@patch.object(INConnection, 'login')
-@patch.object(INConnection, 'purchase_package')
-def test_purchase_package_returns_dict(mock_purchase_package, mock_login, mock_logout):
+
+@mock.patch.object(INConnection, '__exit__')
+@mock.patch.object(INConnection, '__enter__')
+def test_purchase_package_returns_dict(
+    mock_inconnection_enter,
+    mock_inconnection_exit
+):
     # Arrange
-    mock_msisdn = '71187734'
-    mock_package_type = '3'
-    mock_package_grade = '1'
-    mock_profile = '9'
-    mock_current_user = Mock()
-    mock_purchase_package.return_value = True
-    mock_host = '172.18.0.2'
-    mock_port = 7090
-    mock_buffer_size = 4096
+    mock_msisdn = mock.ANY
+    mock_package_type = mock.ANY
+    mock_package_grade = mock.ANY
+    mock_profile = mock.ANY
+    mock_current_user = mock.Mock()
+    mock_inconnection_enter.return_value.purchase_package.return_value = True
     prepaid_request = INRequestHandler(
-        host=mock_host,
-        port=mock_port,
-        buffer_size=mock_buffer_size)
+        None,
+        None,
+        None
+    )
 
     # Act
     success_result = prepaid_request.purchase_package(
@@ -232,17 +236,20 @@ def test_purchase_package_returns_dict(mock_purchase_package, mock_login, mock_l
     # Assert
     assert isinstance(success_result, dict)
 
-@patch.object(INConnection, 'logout')
-@patch.object(INConnection, 'login')
-@patch.object(INConnection, 'purchase_package')
-def test_purchase_package_return_value(mock_purchase_package, mock_login, mock_logout):
+
+@mock.patch.object(INConnection, '__exit__')
+@mock.patch.object(INConnection, '__enter__')
+def test_purchase_package_return_value(
+    mock_inconnection_enter,
+    mock_inconnection_exit
+):
     # Arrange
-    mock_msisdn = '71187734'
-    mock_package_type = '3'
-    mock_package_grade = '1'
-    mock_profile = '9'
-    mock_current_user = Mock()
-    mock_purchase_package.return_value = True
+    mock_msisdn = mock.ANY
+    mock_package_type = mock.ANY
+    mock_package_grade = mock.ANY
+    mock_profile = mock.ANY
+    mock_current_user = mock.Mock()
+    mock_inconnection_enter.return_value.purchase_package.return_value = True
     mock_host = '172.18.0.2'
     mock_port = 7090
     mock_buffer_size = 4096
@@ -267,24 +274,25 @@ def test_purchase_package_return_value(mock_purchase_package, mock_login, mock_l
         'packageGrade': mock_package_grade
     }
 
-@patch.object(INConnection, 'logout')
-@patch.object(INConnection, 'login')
-@patch.object(INConnection, 'purchase_package')
-def test_purchase_package_failed(mock_purchase_package, mock_login, mock_logout):
+
+@mock.patch.object(INConnection, '__exit__')
+@mock.patch.object(INConnection, '__enter__')
+def test_purchase_package_failed(
+    mock_inconnection_enter,
+    mock_inconnection_exit
+):
     # Arrange
-    mock_msisdn = '71187734'
-    mock_package_type = '3'
-    mock_package_grade = '1'
-    mock_profile = '9'
-    mock_current_user = Mock()
-    mock_purchase_package.return_value = False
-    mock_host = '172.18.0.2'
-    mock_port = 7090
-    mock_buffer_size = 4096
+    mock_msisdn = mock.ANY
+    mock_package_type = mock.ANY
+    mock_package_grade = mock.ANY
+    mock_profile = mock.ANY
+    mock_current_user = mock.Mock()
+    mock_inconnection_enter.return_value.purchase_package.return_value = False
     prepaid_request = INRequestHandler(
-        host=mock_host,
-        port=mock_port,
-        buffer_size=mock_buffer_size)
+        None,
+        None,
+        None
+    )
 
     # Act
     success_result = prepaid_request.purchase_package(
