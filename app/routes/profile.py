@@ -34,7 +34,7 @@ def balance(current_user: User, transaction_id: str, msisdn: str):
     account_balance = {
         'transactionId': transaction_id,
         'mobileNumber': account_info['mobileNumber'],
-        'balance': account_info['mobileNumber'],
+        'balance': account_info['balance'],
     }
 
     return jsonify(account_balance), 200

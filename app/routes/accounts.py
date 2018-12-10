@@ -100,7 +100,7 @@ def create(current_user: User, transaction_id: str):
     )
 
     if new_user.is_valid():
-        password_generated = new_user.set_password()
+        password_generated = new_user.set_password(password=data['Password'])
         db.session.add(new_user)
         db.session.commit()
 
