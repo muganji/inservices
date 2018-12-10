@@ -19,6 +19,7 @@ def debit_msisdn(current_user: User, transaction_id: str):
         port=app.config['IN_SERVER']['PORT'],
         buffer_size=app.config['IN_SERVER']['BUFFER_SIZE']
     )
+
     successful_operation = request_manager.debit_airtime(
         msisdn=data['msisdn'],
         amount=data['amount'],
@@ -32,6 +33,14 @@ def debit_msisdn(current_user: User, transaction_id: str):
             'amount': data['amount']
         }
         status_code = 200
+
+        logger.info(
+            'API - SYSTEM - %s - SUCCESS debit of airtime %s from %s  - %s',
+            transaction_id,
+            data['amount'],
+            data['msisdn'],
+            current_user.username
+        )
     else:
         debit_response = {
             'transactionalId': transaction_id,
@@ -40,6 +49,14 @@ def debit_msisdn(current_user: User, transaction_id: str):
             'amount': data['amount']
         }
         status_code = 400
+
+        logger.warning(
+            'API - SYSTEM - %s - FAILED debit of airtime %s from %s  - %s',
+            transaction_id,
+            data['amount'],
+            data['msisdn'],
+            current_user.username
+        )
 
     return jsonify(debit_response), status_code
 
@@ -66,6 +83,14 @@ def credit_msisdn(current_user: User, transaction_id: str):
             'amount': data['amount']
         }
         status_code = 200
+
+        logger.info(
+            'API - SYSTEM - %s - SUCCESS credit of airtime %s from %s  - %s',
+            transaction_id,
+            data['amount'],
+            data['msisdn'],
+            current_user.username
+        )
     else:
         credit_response = {
             'transactionalId': transaction_id,
@@ -74,4 +99,12 @@ def credit_msisdn(current_user: User, transaction_id: str):
             'amount': data['amount']
         }
         status_code = 400
+
+        logger.warning(
+            'API - SYSTEM - %s - FAILED credit of airtime %s from %s  - %s',
+            transaction_id,
+            data['amount'],
+            data['msisdn'],
+            current_user.username
+        )
     return jsonify(credit_response), status_code
