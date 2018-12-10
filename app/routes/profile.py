@@ -5,7 +5,7 @@ from flask import jsonify, make_response, request
 import jwt
 
 from app.decorators import token_required
-from app import app, db, logger
+from app import app, logger
 from app.models.user import User
 from app.models.usertoken import UserToken
 from app.routes import blueprint_api_profile
@@ -21,6 +21,13 @@ def balance(current_user: User, transaction_id: str, msisdn: str):
         host=app.config['IN_SERVER']['HOST'],
         port=app.config['IN_SERVER']['PORT'],
         buffer_size=app.config['IN_SERVER']['BUFFER_SIZE']
+    )
+
+    logger.info(
+        'API - SYSTEM - %s - BALANCE query for %s  - %s',
+        transaction_id,
+        msisdn,
+        current_user.username
     )
 
     account_info = request_manager.account_info(msisdn, current_user)
@@ -42,6 +49,13 @@ def info(current_user: User, transaction_id: str, msisdn: str):
         host=app.config['IN_SERVER']['HOST'],
         port=app.config['IN_SERVER']['PORT'],
         buffer_size=app.config['IN_SERVER']['BUFFER_SIZE']
+    )
+
+    logger.info(
+        'API - SYSTEM - %s - PROFILE query for %s  - %s',
+        transaction_id,
+        msisdn,
+        current_user.username
     )
 
     account_info = request_manager.account_info(msisdn, current_user)
