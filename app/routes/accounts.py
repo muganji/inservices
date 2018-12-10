@@ -67,7 +67,7 @@ def login():
         {'WWW-Authenticate': 'Basic realm="Login required!"'})
 
 
-@blueprint_api_accounts.route('/create', methods=['POST'])
+@blueprint_api_accounts.route('/accounts/create', methods=['POST'])
 @token_required
 def create(current_user: User, transaction_id: str):
     """Route to create user accounts.
