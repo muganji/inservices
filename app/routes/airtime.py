@@ -6,7 +6,6 @@ import jwt
 from app import app, db, logger
 from app.decorators import token_required
 from app.models.user import User
-from app.models.usertoken import UserToken
 from app.routes import blueprint_api_airtime
 from app.handlers.profile_handler import INRequestHandler
 
@@ -76,5 +75,3 @@ def credit_msisdn(current_user: User, transaction_id: str):
         }
         status_code = 400
     return jsonify(credit_response), status_code
-
-
