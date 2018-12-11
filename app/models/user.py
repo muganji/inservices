@@ -45,14 +45,24 @@ class User(db.Model):
 
     def set_password(
             self,
+            password=None,
             size=6,
             chars=string.ascii_letters + string.digits):
         """Creates the password hash"""
-        random_password = ''.join(random.choice(chars) for i in range(size))
-        self.password_hash = generate_password_hash(
-            random_password,
-            method='sha256'
+        if password is None:
+            random_password = ''.join(
+                random.choice(chars) for i in range(size)
             )
+            self.password_hash = generate_password_hash(
+                random_password,
+                method='sha256'
+                )
+        else:
+            random_password = password
+            self.password_hash = generate_password_hash(
+                random_password,
+                method='sha256'
+                )
         return random_password
 
     def check_password(self, password):

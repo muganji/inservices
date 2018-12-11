@@ -9,7 +9,7 @@ from app.routes.services import blueprint_api_services
 # api blueprints
 app.register_blueprint(
     blueprint_api_accounts,
-    url_prefix='/inservices/api/v1.0/accounts'
+    url_prefix='/inservices/api/v1.0'
 )
 app.register_blueprint(
     blueprint_api_airtime,

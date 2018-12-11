@@ -4,13 +4,22 @@
 from flask import jsonify
 from intelecom.intelecom import INQueryError
 
+<<<<<<< HEAD
 from app import app, logger
 from app.decorators import token_required
+=======
+from flask import jsonify, make_response, request
+import jwt
+
+from app.decorators import token_required
+from app import app, logger
+>>>>>>> upstream/master
 from app.models.user import User
 from app.routes import blueprint_api_profile
 from app.handlers.profile_handler import INRequestHandler
 
 
+<<<<<<< HEAD
 @blueprint_api_profile.route('/status/<msisdn>', methods=['GET'])
 @token_required
 def get_msisdn_status(current_user: User, transaction_id: str, msisdn: str):
@@ -30,11 +39,19 @@ def get_msisdn_status(current_user: User, transaction_id: str, msisdn: str):
         dict
             Transaction details, account status and the status code.
         """
+=======
+@blueprint_api_profile.route('/balance/<msisdn>')
+@token_required
+def balance(current_user: User, transaction_id: str, msisdn: str):
+    """Get MSISDN balance
+    """
+>>>>>>> upstream/master
     request_manager = INRequestHandler(
         host=app.config['IN_SERVER']['HOST'],
         port=app.config['IN_SERVER']['PORT'],
         buffer_size=app.config['IN_SERVER']['BUFFER_SIZE']
     )
+<<<<<<< HEAD
     try:
         subscriber_info = request_manager.account_info(
             msisdn=msisdn,
@@ -138,3 +155,45 @@ def get_msisdn_balance(current_user: User, transaction_id: str, msisdn: str):
             current_user.username
         )
     return jsonify(response), status_code
+=======
+
+    logger.info(
+        'API - SYSTEM - %s - BALANCE query for %s  - %s',
+        transaction_id,
+        msisdn,
+        current_user.username
+    )
+
+    account_info = request_manager.account_info(msisdn, current_user)
+    account_balance = {
+        'transactionId': transaction_id,
+        'mobileNumber': account_info['mobileNumber'],
+        'balance': account_info['balance'],
+    }
+
+    return jsonify(account_balance), 200
+
+
+@blueprint_api_profile.route('/<msisdn>')
+@token_required
+def info(current_user: User, transaction_id: str, msisdn: str):
+    """Get MSISDN account profile.
+    """
+    request_manager = INRequestHandler(
+        host=app.config['IN_SERVER']['HOST'],
+        port=app.config['IN_SERVER']['PORT'],
+        buffer_size=app.config['IN_SERVER']['BUFFER_SIZE']
+    )
+
+    logger.info(
+        'API - SYSTEM - %s - PROFILE query for %s  - %s',
+        transaction_id,
+        msisdn,
+        current_user.username
+    )
+
+    account_info = request_manager.account_info(msisdn, current_user)
+    account_info['transactionId'] = transaction_id
+
+    return jsonify(account_info), 200
+>>>>>>> upstream/master

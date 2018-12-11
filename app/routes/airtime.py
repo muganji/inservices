@@ -33,12 +33,22 @@ def debit_msisdn(current_user: User, transaction_id: str):
         port=app.config['IN_SERVER']['PORT'],
         buffer_size=app.config['IN_SERVER']['BUFFER_SIZE']
     )
+<<<<<<< HEAD
     try:
         successful_operation = request_manager.debit_airtime(
             msisdn=data['msisdn'],
             amount=data['amount'],
             current_user=current_user
         )
+=======
+
+    successful_operation = request_manager.debit_airtime(
+        msisdn=data['msisdn'],
+        amount=data['amount'],
+        current_user=current_user
+    )
+    if successful_operation:
+>>>>>>> upstream/master
         debit_response = {
             'transactionId': transaction_id,
             'operationResult': successful_operation['operationResult'],
@@ -47,6 +57,7 @@ def debit_msisdn(current_user: User, transaction_id: str):
             'message': 'Debit query successful'
         }
         status_code = 200
+<<<<<<< HEAD
         msisdn = successful_operation['msisdn']
         logger.info(
             'API - SYSTEM - %s - MSISDN(%s) debit query SUCCESS - %s',
@@ -55,6 +66,17 @@ def debit_msisdn(current_user: User, transaction_id: str):
             current_user.username
         )
     except INQueryError:
+=======
+
+        logger.info(
+            'API - SYSTEM - %s - SUCCESS debit of airtime %s from %s  - %s',
+            transaction_id,
+            data['amount'],
+            data['msisdn'],
+            current_user.username
+        )
+    else:
+>>>>>>> upstream/master
         debit_response = {
             'transactionId': transaction_id,
             'operationResult': 'Failed',
@@ -67,6 +89,14 @@ def debit_msisdn(current_user: User, transaction_id: str):
             'API - SYSTEM - %s - MSISDN(%s) debit query FAILED with IN'
             ' query error - %s',
             transaction_id,
+            data['msisdn'],
+            current_user.username
+        )
+
+        logger.warning(
+            'API - SYSTEM - %s - FAILED debit of airtime %s from %s  - %s',
+            transaction_id,
+            data['amount'],
             data['msisdn'],
             current_user.username
         )
@@ -111,6 +141,7 @@ def credit_msisdn(current_user: User, transaction_id: str):
             'message': 'Credit query successful'
         }
         status_code = 200
+<<<<<<< HEAD
         msisdn = successful_operation['msisdn']
         logger.info(
             'API - SYSTEM - %s - MSISDN(%s) credit query SUCCESS - %s',
@@ -119,6 +150,17 @@ def credit_msisdn(current_user: User, transaction_id: str):
             current_user.username
         )
     except INQueryError:
+=======
+
+        logger.info(
+            'API - SYSTEM - %s - SUCCESS credit of airtime %s from %s  - %s',
+            transaction_id,
+            data['amount'],
+            data['msisdn'],
+            current_user.username
+        )
+    else:
+>>>>>>> upstream/master
         credit_response = {
             'transactionId': transaction_id,
             'operationResult': 'Failed',
@@ -126,12 +168,21 @@ def credit_msisdn(current_user: User, transaction_id: str):
             'amount': None,
             'message': 'credit query failed'
         }
+<<<<<<< HEAD
         status_code = 500
 
         logger.info(
             'API - SYSTEM - %s - MSISDN(%s) credit query FAILED with IN'
             ' query error - %s',
             transaction_id,
+=======
+        status_code = 400
+
+        logger.warning(
+            'API - SYSTEM - %s - FAILED credit of airtime %s from %s  - %s',
+            transaction_id,
+            data['amount'],
+>>>>>>> upstream/master
             data['msisdn'],
             current_user.username
         )

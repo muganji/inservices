@@ -29,7 +29,7 @@ def setup_logging():
         datefmt=log_date_format)
 
     rotating_handler = TimedRotatingFileHandler(
-        filename='../logs/inservices.log',
+        filename='/var/log/inservices_api/inservices.log',
         encoding='utf-8',
         when='midnight',
         utc=True

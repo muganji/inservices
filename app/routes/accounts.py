@@ -67,7 +67,7 @@ def login():
         {'WWW-Authenticate': 'Basic realm="Login required!"'})
 
 
-@blueprint_api_accounts.route('/create', methods=['POST'])
+@blueprint_api_accounts.route('/accounts/create', methods=['POST'])
 @token_required
 def create(current_user: User, transaction_id: str):
     # current_user = User(mml_username='vasuser', mml_password='pkgmml99', is_admin=True, is_active=True)
@@ -102,7 +102,7 @@ def create(current_user: User, transaction_id: str):
     )
 
     if new_user.is_valid():
-        password_generated = new_user.set_password()
+        password_generated = new_user.set_password(password=data['Password'])
         db.session.add(new_user)
         db.session.commit()
 
